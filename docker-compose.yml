@@ -1,0 +1,14 @@
+services:
+  lipika-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OCR_PROVIDER=gemini
+      - AI_PROVIDER=gemini
+    restart: unless-stopped

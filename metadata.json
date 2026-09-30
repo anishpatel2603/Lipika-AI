@@ -1,0 +1,6 @@
+{
+  "name": "Lipika AI - English to Hindi Transliteration Agent",
+  "description": "AI-powered English to Hindi transliteration agent with camera OCR, image processing, and natural Devanagari phonetics.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
