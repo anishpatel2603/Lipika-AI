@@ -21,9 +21,7 @@ app.get('/api/health', (req: Request, res: Response) => {
     status: 'ok',
     service: 'Lipika AI Agent Server',
     version: '1.0.0',
-    hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
-    ocrProvider: process.env.OCR_PROVIDER || 'gemini',
-    aiProvider: process.env.AI_PROVIDER || 'gemini',
+    hasGeminiKey: Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'MY_GEMINI_API_KEY'),
   });
 });
 

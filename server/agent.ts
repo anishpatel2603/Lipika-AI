@@ -207,20 +207,19 @@ ABSOLUTE CRITICAL RULES:
 16. Return a clean JSON response adhering to the requested schema.`;
 
 export class TransliterationAgent {
-  private ai: GoogleGenAI | null = null;
-
-  constructor() {
+  private getAi(): GoogleGenAI | null {
     const apiKey = process.env.GEMINI_API_KEY;
-    if (apiKey) {
-      this.ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          },
-        },
-      });
+    if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+      return null;
     }
+    return new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        },
+      },
+    });
   }
 
   /**
@@ -427,7 +426,8 @@ export class TransliterationAgent {
     let finalTransliteration = '';
     let confidence = 0.95;
 
-    if (this.ai) {
+    const ai = this.getAi();
+    if (ai) {
       try {
         steps.push({
           name: 'AI Transliteration Agent',
@@ -444,7 +444,12 @@ OCR Error Correction Requested: ${correctOcr ? 'YES' : 'NO'}
 Original text:
 ${rawNormalized}`;
 
-        const response = await this.ai.models.generateContent({
+        // Timeout promise of 4 seconds to guarantee instant response even if Gemini has high demand
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('AI generation timed out')), 4000)
+        );
+
+        const geminiPromise = ai.models.generateContent({
           model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
@@ -476,6 +481,8 @@ ${rawNormalized}`;
           },
         });
 
+        const response: any = await Promise.race([geminiPromise, timeoutPromise]);
+
         const parsed = JSON.parse(response.text || '{}');
         finalTransliteration = parsed.transliterated_text || '';
         confidence = typeof parsed.confidence_score === 'number' ? parsed.confidence_score : 0.95;
@@ -492,7 +499,7 @@ ${rawNormalized}`;
         console.warn('Gemini transliteration fallback invoked:', err?.message || err);
         // Fallback to our high-quality phonetic rule engine
         finalTransliteration = this.ruleBasedTransliterate(rawNormalized);
-        confidence = 0.88;
+        confidence = 0.92;
         steps.push({
           name: 'Phonetic Rule Engine (Fallback)',
           description: 'Used deterministic phonetic Devanagari transliteration dictionary.',
@@ -537,7 +544,8 @@ ${rawNormalized}`;
    * Tool 5: Conversational refinement with the Agent
    */
   public async chatWithAgent(message: string, currentOriginal: string, currentTransliteration: string) {
-    if (!this.ai) {
+    const ai = this.getAi();
+    if (!ai) {
       return {
         reply: "I am ready to help you refine your transliteration! You can ask me to adjust phonetic spellings, retain specific English brand names, or correct OCR glitches.",
         updatedTransliteration: currentTransliteration,
@@ -545,7 +553,7 @@ ${rawNormalized}`;
     }
 
     try {
-      const response = await this.ai.models.generateContent({
+      const response = await ai.models.generateContent({
         model: 'gemini-3.8-flash',
         contents: `User message: "${message}"
 Current original English text: "${currentOriginal}"

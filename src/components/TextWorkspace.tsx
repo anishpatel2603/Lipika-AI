@@ -7,23 +7,16 @@ import {
   Share2,
   Trash2,
   ClipboardPaste,
-  Sparkles,
   Volume2,
   VolumeX,
   FileText,
   FileCheck2,
-  Cpu,
-  ChevronDown,
-  ChevronUp,
-  RotateCcw,
   Pencil,
   AlertCircle,
-  HelpCircle,
 } from 'lucide-react';
 import { transliterateText, generateTTS } from '../services/api.js';
 import { copyToClipboard, downloadAsTxt, downloadAsPdf, shareResult } from '../utils/export.js';
 import { saveHistoryItem } from '../utils/storage.js';
-import { AgentStep } from '../types/index.js';
 
 interface TextWorkspaceProps {
   initialText?: string;
@@ -48,8 +41,6 @@ export const TextWorkspace: React.FC<TextWorkspaceProps> = ({ initialText = '', 
   const [isEditable, setIsEditable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confidence, setConfidence] = useState<number | null>(null);
-  const [steps, setSteps] = useState<AgentStep[]>([]);
-  const [showSteps, setShowSteps] = useState(false);
   const [copied, setCopied] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -70,7 +61,6 @@ export const TextWorkspace: React.FC<TextWorkspaceProps> = ({ initialText = '', 
       if (response.success) {
         setOutputText(response.transliteration);
         setConfidence(response.confidence);
-        setSteps(response.steps || []);
 
         // Save to History
         saveHistoryItem({
@@ -111,7 +101,6 @@ export const TextWorkspace: React.FC<TextWorkspaceProps> = ({ initialText = '', 
     setInputText('');
     setOutputText('');
     setConfidence(null);
-    setSteps([]);
     setErrorMsg(null);
   };
 
@@ -420,17 +409,6 @@ export const TextWorkspace: React.FC<TextWorkspaceProps> = ({ initialText = '', 
                   </>
                 )}
               </button>
-
-              {steps.length > 0 && (
-                <button
-                  onClick={() => setShowSteps(!showSteps)}
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-                >
-                  <Cpu className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Agent Logs</span>
-                  {showSteps ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                </button>
-              )}
             </div>
 
             {/* Export Actions */}
@@ -491,46 +469,6 @@ export const TextWorkspace: React.FC<TextWorkspaceProps> = ({ initialText = '', 
           </div>
         </div>
       </div>
-
-      {/* Agent Workflow Steps Drawer */}
-      {showSteps && steps.length > 0 && (
-        <div className="mt-6 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm animate-in fade-in duration-200">
-          <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-amber-600" />
-              <h3 className="text-sm font-bold text-slate-900">
-                AI Transliteration Agent Execution Trace
-              </h3>
-            </div>
-            <span className="text-xs font-mono text-slate-400">Total steps: {steps.length}</span>
-          </div>
-
-          <div className="space-y-3">
-            {steps.map((st, i) => (
-              <div key={i} className="flex items-start gap-3 text-xs">
-                <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-mono font-bold shrink-0 mt-0.5">
-                  {i + 1}
-                </span>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900">{st.name}</span>
-                    <span className="text-[10px] font-mono text-slate-400">+{st.timestamp}ms</span>
-                    <span className="px-1.5 py-0.2 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      {st.status}
-                    </span>
-                  </div>
-                  <p className="text-slate-600 mt-0.5">{st.description}</p>
-                  {st.detail && (
-                    <p className="text-[11px] font-mono text-amber-800 bg-amber-50/60 p-1 rounded mt-1">
-                      {st.detail}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

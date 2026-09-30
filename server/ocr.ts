@@ -2,20 +2,19 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { OCRResponse } from '../src/types/index.js';
 
 export class OCRService {
-  private ai: GoogleGenAI | null = null;
-
-  constructor() {
+  private getAi(): GoogleGenAI | null {
     const apiKey = process.env.GEMINI_API_KEY;
-    if (apiKey) {
-      this.ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          },
-        },
-      });
+    if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+      return null;
     }
+    return new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        },
+      },
+    });
   }
 
   /**
@@ -42,7 +41,8 @@ export class OCRService {
       base64Data = matches[2];
     }
 
-    if (this.ai) {
+    const ai = this.getAi();
+    if (ai) {
       try {
         const imagePart = {
           inlineData: {
@@ -59,7 +59,7 @@ Do not summarize, do not translate, and do not add conversational notes.
 Evaluate your confidence in the character clarity (from 0.0 to 1.0).`,
         };
 
-        const response = await this.ai.models.generateContent({
+        const response = await ai.models.generateContent({
           model: 'gemini-3.8-flash',
           contents: { parts: [imagePart, promptPart] },
           config: {
