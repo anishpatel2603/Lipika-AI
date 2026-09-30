@@ -1,5 +1,8 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import { AgentStep, TransliterateResponse } from '../src/types/index.js';
+import { advancedPhoneticTransliterate, fixDevanagariOrphanMatras } from '../src/services/phoneticParser.js';
+
+export { fixDevanagariOrphanMatras };
 
 // Pre-compiled common phonetic transliteration dictionary for rapid response and reliable offline fallback
 const PHONETIC_DICTIONARY: Record<string, string> = {
@@ -129,7 +132,47 @@ const PHONETIC_DICTIONARY: Record<string, string> = {
   'center': 'सेंटर',
   'centre': 'सेंटर',
   'bank': 'बैंक',
-  'atm': 'एटीएम'
+  'atm': 'एटीएम',
+
+  // Conversational words, verbs & status
+  'is': 'इज़',
+  'are': 'आर',
+  'am': 'एम',
+  'was': 'वॉज़',
+  'were': 'वर',
+  'it': 'इट',
+  'this': 'दिस',
+  'that': 'दैट',
+  'all': 'ऑल',
+  'right': 'राइट',
+  'fine': 'फाइन',
+  'ok': 'ओके',
+  'okay': 'ओके',
+  'everything': 'एवरीथिंग',
+  'work': 'वर्क',
+  'working': 'वर्किंग',
+  'perfect': 'परफेक्ट',
+  'perfectly': 'परफेक्टली',
+  'test': 'टेस्ट',
+  'testing': 'टेस्टिंग',
+  'check': 'चेक',
+  'solve': 'सॉल्व',
+  'solved': 'सॉल्व्ड',
+  'problem': 'प्रॉब्लम',
+  'issue': 'इशू',
+  'and': 'एंड',
+  'or': 'ऑर',
+  'not': 'नॉट',
+  'very': 'वेरी',
+  'now': 'नाउ',
+  'here': 'हियर',
+  'there': 'देयर',
+  'how': 'हाउ',
+  'what': 'व्हॉट',
+  'where': 'व्हेर',
+  'when': 'व्हेन',
+  'why': 'व्हाय',
+  'who': 'हू'
 };
 
 // Common Hinglish / Romanized Hindi mapping
@@ -183,28 +226,49 @@ const HINGLISH_MAP: Record<string, string> = {
   'acha': 'अच्छा'
 };
 
-const SYSTEM_INSTRUCTION = `You are Lipika AI, an expert Hindi transliteration agent.
-Your core task is TRANSLITERATION, NOT TRANSLATION.
+const SYSTEM_INSTRUCTION = `You are Lipika AI, a world-class Hindi transliteration agent trained on massive Indian English and Hinglish corpora.
+Your core task is EXACT PHONETIC TRANSLITERATION, NOT TRANSLATION. There must be ZERO SPELLING MISTAKES and zero broken Unicode characters.
 
-Convert English words, Hinglish words, and English sentences into natural Hindi Devanagari script preserving their exact phonetic pronunciation as spoken in contemporary India.
+Convert English words, Hinglish phrases, and English sentences into natural, authentic Hindi Devanagari script preserving contemporary Indian spoken pronunciation.
 
 ABSOLUTE CRITICAL RULES:
-1. NEVER TRANSLATE THE MEANING. If the user writes "Good Morning", output "गुड मॉर्निंग" (NEVER "सुप्रभात").
-2. "Computer Science" -> "कंप्यूटर साइंस" (NEVER "संगणक विज्ञान").
-3. "Welcome to Mumbai" -> "वेलकम टू मुंबई".
-4. "Artificial Intelligence" -> "आर्टिफिशियल इंटेलिजेंस".
-5. "Pillai College of Engineering" -> "पिल्लई कॉलेज ऑफ इंजीनियरिंग".
-6. "Smart Traffic Management" -> "स्मार्ट ट्रैफिक मैनेजमेंट".
-7. "Cyber Security" -> "साइबर सिक्योरिटी".
-8. "Machine Learning" -> "मशीन लर्निंग".
-9. "Technology" -> "टेक्नोलॉजी".
-10. "Room No. 204" -> "रूम नं. 204" or "रूम No. 204". Preserve numbers and digits.
-11. Preserve all URLs, email addresses, and technical code intact (e.g., https://example.com stays https://example.com).
-12. Preserve punctuation, bullet points, indentation, line breaks, and paragraph structures.
-13. If input is mixed English and Devanagari (e.g. "Welcome to मुंबई College"), keep the Devanagari untouched ("मुंबई") and transliterate only the English ("वेलकम टू मुंबई कॉलेज").
-14. Correct obvious OCR typos if confident (e.g., "Welc0me t0 Mumb@i" -> "वेलकम टू मुंबई").
-15. If input is Romanized Hindi (Hinglish, e.g. "Namaste aap kaise ho"), transliterate naturally to Hindi: "नमस्ते आप कैसे हो".
-16. Return a clean JSON response adhering to the requested schema.`;
+1. NEVER TRANSLATE THE MEANING.
+   - "Good Morning" -> "गुड मॉर्निंग" (NEVER "सुप्रभात").
+   - "Computer Science" -> "कंप्यूटर साइंस" (NEVER "संगणक विज्ञान").
+   - "Welcome to Mumbai" -> "वेलकम टू मुंबई".
+   - "Artificial Intelligence" -> "आर्टिफिशियल इंटेलिजेंस".
+   - "Pillai College of Engineering" -> "पिल्लई कॉलेज ऑफ इंजीनियरिंग".
+   - "Smart Traffic Management" -> "स्मार्ट ट्रैफिक मैनेजमेंट".
+   - "Cyber Security" -> "साइबर सिक्योरिटी".
+   - "Machine Learning" -> "मशीन लर्निंग".
+   - "Technology" -> "टेक्नोलॉजी".
+   - "Is everything working perfectly" -> "इज़ एवरीथिंग वर्किंग परफेक्टली".
+
+2. ZERO SPELLING MISTAKES & TYPO TOLERANCE:
+   - Autocorrect obvious typos, garbled OCR characters, and common phonetic misspellings in the input:
+     - e.g. "compluter" -> "कंप्यूटर"
+     - "engneering" -> "इंजीनियरिंग"
+     - "perfctly" -> "परफेक्टली"
+     - "Welc0me t0 Mumb@i" -> "वेलकम टू मुंबई"
+     - "d3partment" -> "डिपार्टमेंट"
+   - Output must have 100% correct Devanagari spelling as accepted in modern standard Hindi press and signage.
+
+3. ORTHOGRAPHIC & UNICODE INTEGRITY:
+   - NEVER emit orphaned matras (dependent vowel signs like ि, े, ो at the start of a word).
+   - Word-initial vowel sounds MUST always use independent vowel characters (अ, आ, इ, ई, उ, ऊ, ए, ऐ, ओ, औ).
+     - e.g. "Is" -> "इज़" (NEVER "◌िस").
+     - "Everything" -> "एवरीथिंग" (NEVER "◌ेवेरयथइंग").
+     - "Auto" -> "ऑटो".
+   - Never output dotted circles (U+25CC).
+
+4. ENTITY & FORMAT PRESERVATION:
+   - "Room No. 204" -> "रूम नं. 204" or "रूम No. 204". Preserve numbers and digits.
+   - Preserve all URLs, email addresses, and technical code intact (e.g., https://example.com stays https://example.com).
+   - Preserve punctuation, bullet points, indentation, line breaks, and paragraph structures.
+   - If input is mixed English and Devanagari (e.g. "Welcome to मुंबई College"), keep the Devanagari untouched ("मुंबई") and transliterate only the English ("वेलकम टू मुंबई कॉलेज").
+   - If input is Romanized Hindi (Hinglish, e.g. "Namaste aap kaise ho"), transliterate naturally to Hindi: "नमस्ते आप कैसे हो".
+
+5. Return a clean JSON response adhering to the requested schema.`;
 
 export class TransliterationAgent {
   private getAi(): GoogleGenAI | null {
@@ -272,57 +336,48 @@ export class TransliterationAgent {
   }
 
   /**
-   * Tool 3: Rule-based fallback transliteration
-   * Fast, reliable dictionary & phonetic transliteration when offline or during fallback.
+   * Tool 3: Advanced Syllable & Lexicon Rule-Based Transliteration
    */
   public ruleBasedTransliterate(text: string): string {
-    const lines = text.split('\n');
-    const processedLines = lines.map((line) => {
-      // Split preserving words, URLs, and punctuation
-      const tokens = line.split(/([a-zA-Z0-9]+|https?:\/\/[^\s]+|[^\s\w]+|\s+)/g).filter(Boolean);
-      return tokens
-        .map((tok) => {
-          // If URL or email, keep verbatim
-          if (/^(https?:\/\/|www\.|[a-zA-Z0-9._%+-]+@)/i.test(tok)) {
-            return tok;
-          }
-          // If pure numbers, return as is
-          if (/^\d+$/.test(tok)) {
-            return tok;
-          }
-          // If already Devanagari, keep as is
-          if (/[\u0900-\u097F]/.test(tok)) {
-            return tok;
-          }
-          // If spaces or punctuation, return
-          if (/^[\s\p{P}]+$/u.test(tok)) {
-            return tok;
-          }
-
-          const lower = tok.toLowerCase();
-          // Check phonetic dictionary
-          if (PHONETIC_DICTIONARY[lower]) {
-            return PHONETIC_DICTIONARY[lower];
-          }
-          // Check Hinglish map
-          if (HINGLISH_MAP[lower]) {
-            return HINGLISH_MAP[lower];
-          }
-
-          // Heuristic Devanagari transliteration for unknown Latin words
-          return this.phoneticHeuristic(tok);
-        })
-        .join('');
-    });
-
-    return processedLines.join('\n');
+    return advancedPhoneticTransliterate(text);
   }
 
   /**
-   * Basic phonetic mapping fallback for unknown words
+   * Basic phonetic mapping fallback for unknown words with initial-vowel protection
    */
   private phoneticHeuristic(word: string): string {
-    const w = word.toLowerCase();
+    let w = word.toLowerCase();
+
+    // Check initial vowels/prefixes to prevent orphan matras
+    const initialVowels: [RegExp, string][] = [
+      [/^every/i, 'एवरी'],
+      [/^extra/i, 'एक्स्ट्रा'],
+      [/^anti/i, 'एंटी'],
+      [/^auto/i, 'ऑटो'],
+      [/^over/i, 'ओवर'],
+      [/^inter/i, 'इंटर'],
+      [/^under/i, 'अंडर'],
+      [/^ai/i, 'ऐ'],
+      [/^au/i, 'औ'],
+      [/^oo/i, 'ऊ'],
+      [/^ee/i, 'ई'],
+      [/^aa/i, 'आ'],
+      [/^a/i, 'अ'],
+      [/^e/i, 'ए'],
+      [/^i/i, 'इ'],
+      [/^o/i, 'ओ'],
+      [/^u/i, 'उ'],
+    ];
+
+    let prefix = '';
+    for (const [pattern, dev] of initialVowels) {
+      if (pattern.test(w)) {
+        prefix = dev;
+        w = w.replace(pattern, '');
+        break;
+      }
+    }
+
     const map: [RegExp, string][] = [
       [/sch/g, 'स्क'],
       [/ph/g, 'फ'],
@@ -343,6 +398,8 @@ export class TransliterationAgent {
       [/ment/g, 'मेंट'],
       [/ing$/g, 'इंग'],
       [/ed$/g, '्ड'],
+      [/ly$/g, 'ली'],
+      [/ty$/g, 'टी'],
       [/a/g, 'ा'],
       [/e/g, 'े'],
       [/i/g, 'ि'],
@@ -377,7 +434,8 @@ export class TransliterationAgent {
     }
     // Clean orphan Latin chars
     res = res.replace(/[a-z]/g, '');
-    return res || word;
+    const combined = prefix + res;
+    return fixDevanagariOrphanMatras(combined) || word;
   }
 
   /**
@@ -444,9 +502,9 @@ OCR Error Correction Requested: ${correctOcr ? 'YES' : 'NO'}
 Original text:
 ${rawNormalized}`;
 
-        // Timeout promise of 4 seconds to guarantee instant response even if Gemini has high demand
+        // Timeout promise of 12 seconds to guarantee response even if upstream has slight latency
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('AI generation timed out')), 4000)
+          setTimeout(() => reject(new Error('AI generation timed out')), 12000)
         );
 
         const geminiPromise = ai.models.generateContent({
@@ -484,7 +542,7 @@ ${rawNormalized}`;
         const response: any = await Promise.race([geminiPromise, timeoutPromise]);
 
         const parsed = JSON.parse(response.text || '{}');
-        finalTransliteration = parsed.transliterated_text || '';
+        finalTransliteration = fixDevanagariOrphanMatras(parsed.transliterated_text || '');
         confidence = typeof parsed.confidence_score === 'number' ? parsed.confidence_score : 0.95;
 
         const corrections = parsed.ocr_corrections_made || [];
