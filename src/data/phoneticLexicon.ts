@@ -6,7 +6,25 @@
  */
 
 export const PHONETIC_LEXICON: Record<string, string> = {
-  // --- Auxiliary Verbs & Pronouns & Prepositions ---
+  // --- Core Vocabulary & System Terms ---
+  'right': 'राइट',
+  'rights': 'राइट्स',
+  'meaning': 'मीनिंग',
+  'meanings': 'मीनिंग्स',
+  'hosted': 'होस्टेड',
+  'hosting': 'होस्टिंग',
+  'host': 'होस्ट',
+  'fix': 'फिक्स',
+  'fixes': 'फिक्सेस',
+  'fixing': 'फिक्सिंग',
+  'fixed': 'फिक्स्ड',
+  'gives': 'गिव्स',
+  'websites': 'वेबसाइट्स',
+  'site': 'साइट',
+  'sites': 'साइट्स',
+  'wrong': 'रॉन्ग',
+  'wrongs': 'रॉन्ग्स',
+  'writer': 'राइटर',
   'the': 'द',
   'properly': 'प्रॉपर्ली',
   'proper': 'प्रॉपर',
@@ -169,6 +187,29 @@ export const PHONETIC_LEXICON: Record<string, string> = {
   'taking': 'टेकिंग',
   'took': 'टुक',
   'taken': 'टेकन',
+  'talk': 'टॉक',
+  'talking': 'टॉकिंग',
+  'talked': 'टॉक्ड',
+  'talks': 'टॉक्स',
+  'walk': 'वॉक',
+  'walking': 'वॉकिंग',
+  'walked': 'वॉक्ड',
+  'walks': 'वॉक्स',
+  'say': 'से',
+  'saying': 'सेइंग',
+  'said': 'सेड',
+  'speak': 'स्पीक',
+  'speaking': 'स्पीकिंग',
+  'spoken': 'स्पोकन',
+  'tell': 'टेल',
+  'telling': 'टेलिंग',
+  'told': 'टोल्ड',
+  'ask': 'आस्क',
+  'asking': 'आस्किंग',
+  'asked': 'आस्क्ड',
+  'think': 'थिंक',
+  'thinking': 'थिंकिंग',
+  'thought': 'थॉट',
   'give': 'गिव',
   'giving': 'गिविंग',
   'gave': 'गेव',
@@ -197,8 +238,6 @@ export const PHONETIC_LEXICON: Record<string, string> = {
   'run': 'रन',
   'running': 'रनिंग',
   'ran': 'रैन',
-  'walk': 'वॉक',
-  'walking': 'वॉकिंग',
   'call': 'कॉल',
   'calling': 'कॉलिंग',
   'called': 'कॉल्ड',
@@ -1175,7 +1214,7 @@ export const HINDI_MEANING_DICTIONARY: Record<string, string> = {
   'close': 'बंद करें',
   'yes': 'हाँ',
   'no': 'नहीं',
-  'right': 'दाएँ / सही',
+  'right': 'सही / दायाँ',
   'left': 'बाएँ',
   'straight': 'सीधे',
   'ahead': 'आगे',
@@ -1190,6 +1229,95 @@ export const HINDI_MEANING_DICTIONARY: Record<string, string> = {
   'problem': 'समस्या / कठिनाई',
   'issue': 'समस्या / मुद्दा',
   'issues': 'समस्याएँ',
+
+  // Meaning, Correctness & Linguistic Feedback
+  'this is not the right meaning': 'यह सही अर्थ नहीं है।',
+  'this is not the proper meaning': 'यह उचित अर्थ नहीं है।',
+  'this is not the correct meaning': 'यह सही अर्थ नहीं है।',
+  'this is not right': 'यह सही नहीं है।',
+  'this is not correct': 'यह सही नहीं है।',
+  'this is not proper': 'यह उचित नहीं है।',
+  'this is wrong': 'यह गलत है।',
+  'this is right': 'यह सही है।',
+  'this is correct': 'यह सही है।',
+  'this is proper': 'यह उचित है।',
+  'this is the right meaning': 'यह सही अर्थ है।',
+  'this is the proper meaning': 'यह उचित अर्थ है।',
+  'this is the correct meaning': 'यह सही अर्थ है।',
+  'not the right meaning': 'सही अर्थ नहीं',
+  'not the proper meaning': 'उचित अर्थ नहीं',
+  'not the correct meaning': 'सही अर्थ नहीं',
+  'not right meaning': 'सही अर्थ नहीं',
+  'not proper meaning': 'उचित अर्थ नहीं',
+  'right meaning': 'सही अर्थ / उचित मतलब',
+  'proper meaning': 'उचित अर्थ / सही मतलब',
+  'correct meaning': 'सही अर्थ / उचित मतलब',
+  'wrong meaning': 'गलत अर्थ',
+  'actual meaning': 'वास्तविक अर्थ',
+  'real meaning': 'असली अर्थ / वास्तविक मतलब',
+  'hindi meaning': 'हिंदी अर्थ (मतलब)',
+  'english meaning': 'अंग्रेजी अर्थ',
+  'give me the meaning': 'मुझे इसका अर्थ बताएं',
+  'what is the meaning of this': 'इसका क्या अर्थ है?',
+
+  // Hosted Website & System Feedback Phrases
+  'in the hosted website it is not giving the proper meaning fix this': 'होस्टेड वेबसाइट में यह उचित अर्थ नहीं दे रहा है, कृपया इसे ठीक करें।',
+  'in the hosted website it is now giving the proper meaning fix this': 'होस्टेड वेबसाइट में यह उचित अर्थ नहीं दे रहा है, कृपया इसे ठीक करें।',
+  'in the hosted website it is not giving the right meaning fix this': 'होस्टेड वेबसाइट में यह सही अर्थ नहीं दे रहा है, कृपया इसे ठीक करें।',
+  'in the hosted website it is not giving the proper meaning': 'होस्टेड वेबसाइट में यह उचित अर्थ नहीं दे रहा है।',
+  'in the hosted website it is not giving the right meaning': 'होस्टेड वेबसाइट में यह सही अर्थ नहीं दे रहा है।',
+  'in the hosted website': 'होस्ट की गई वेबसाइट में',
+  'on the hosted website': 'होस्ट की गई वेबसाइट पर',
+  'hosted website': 'होस्टेड वेबसाइट (होस्ट की गई वेबसाइट)',
+  'hosted site': 'होस्टेड साइट',
+  'hosted': 'होस्टेड (होस्ट किया गया)',
+  'website': 'वेबसाइट',
+  'websites': 'वेबसाइट्स',
+  'web page': 'वेब पेज',
+  'web': 'वेब',
+  'site': 'साइट / वेबसाइट',
+  'it is not giving the proper meaning': 'यह उचित अर्थ नहीं दे रहा है।',
+  'it is not giving the right meaning': 'यह सही अर्थ नहीं दे रहा है।',
+  'it is not giving proper meaning': 'यह उचित अर्थ नहीं दे रहा है।',
+  'it is not giving right meaning': 'यह सही अर्थ नहीं दे रहा है।',
+  'it is not giving the correct meaning': 'यह सही अर्थ नहीं दे रहा है।',
+  'it is giving the proper meaning': 'यह उचित अर्थ दे रहा है।',
+  'it is giving the right meaning': 'यह सही अर्थ दे रहा है।',
+  'giving the proper meaning': 'उचित अर्थ दे रहा है',
+  'giving the right meaning': 'सही अर्थ दे रहा है',
+  'giving': 'दे रहा है / दे रही है',
+  'gives': 'देता है / देती है',
+  'give': 'देना / दीजिए',
+  'fix this': 'इसे ठीक करें',
+  'fix this issue': 'इस समस्या को ठीक करें',
+  'please fix this': 'कृपया इसे ठीक करें',
+  'please fix': 'कृपया ठीक करें',
+  'fix': 'ठीक करना / सुधारना',
+  'fixing': 'ठीक कर रहा है',
+  'fixed': 'ठीक किया गया',
+
+  // Campus Directives & Assembly
+  'students please report to the ground': 'विद्यार्थी कृपया मैदान में उपस्थित हों',
+  'students please report to the ground.': 'विद्यार्थी कृपया मैदान में उपस्थित हों',
+  'students, please report to the ground': 'विद्यार्थी कृपया मैदान में उपस्थित हों',
+  'all students please report to the ground': 'सभी विद्यार्थी कृपया मैदान में उपस्थित हों',
+  'all students are requested to report to the ground': 'सभी विद्यार्थियों से अनुरोध है कि वे मैदान में उपस्थित हों',
+  'students are requested to report to the ground': 'विद्यार्थियों से अनुरोध है कि वे मैदान में उपस्थित हों',
+  'please report to the ground': 'कृपया मैदान में उपस्थित हों',
+  'report to the ground': 'मैदान में उपस्थित हों',
+  'students please report to the auditorium': 'विद्यार्थी कृपया सभागार में उपस्थित हों',
+  'all students please report to the auditorium': 'सभी विद्यार्थी कृपया सभागार में उपस्थित हों',
+  'please report to the auditorium': 'कृपया सभागार में उपस्थित हों',
+  'report to the auditorium': 'सभागार में उपस्थित हों',
+  'students please report to the hall': 'विद्यार्थी कृपया हॉल में उपस्थित हों',
+  'students please report to the office': 'विद्यार्थी कृपया कार्यालय में उपस्थित हों',
+  'students please report to the library': 'विद्यार्थी कृपया पुस्तकालय में उपस्थित हों',
+  'report to': 'उपस्थित होना / पहुँचना',
+  'report': 'उपस्थित होना / रिपोर्ट',
+  'reported': 'उपस्थित हुए',
+  'reporting': 'उपस्थित होना',
+  'ground': 'मैदान',
+  'grounds': 'मैदान',
   'solution': 'समाधान / हल',
   'speed': 'गति / रफ़्तार',
   'slow': 'धीमा',
@@ -1218,6 +1346,24 @@ export const HINDI_MEANING_DICTIONARY: Record<string, string> = {
   'why are there circle': 'वहाँ वृत्त (सर्कल) क्यों हैं?',
   'why are there circles': 'वहाँ वृत्त (सर्कल) क्यों हैं?',
   'what is your name': 'आपका नाम क्या है?',
+  'what are you talking about': 'आप किस बारे में बात कर रहे हैं?',
+  'what are you talking about?': 'आप किस बारे में बात कर रहे हैं?',
+  'what are you saying': 'आप क्या कह रहे हैं?',
+  'what are you saying?': 'आप क्या कह रहे हैं?',
+  'what are you thinking': 'आप क्या सोच रहे हैं?',
+  'what are you thinking about': 'आप किस बारे में सोच रहे हैं?',
+  'what are you looking for': 'आप क्या ढूँढ रहे हैं?',
+  'what are you waiting for': 'आप किसका इंतज़ार कर रहे हैं?',
+  'what do you mean': 'आपका क्या मतलब है?',
+  'what do you want': 'आप क्या चाहते हैं?',
+  'what do you need': 'आपको क्या चाहिए?',
+  'what is the problem': 'क्या समस्या है?',
+  'what is the matter': 'क्या बात है?',
+  'what happened': 'क्या हुआ?',
+  'what is happening': 'क्या हो रहा है?',
+  'what is going on': 'क्या चल रहा है?',
+  'who are you talking to': 'आप किससे बात कर रहे हैं?',
+  'where are you': 'आप कहाँ हैं?',
   'where are you going': 'आप कहाँ जा रहे हैं?',
   'what are you doing': 'आप क्या कर रहे हैं?',
   'i am fine': 'मैं ठीक हूँ',
@@ -1377,14 +1523,63 @@ export const HINDI_MEANING_DICTIONARY: Record<string, string> = {
   'line': 'पंक्ति / लाइन',
   'meaning': 'अर्थ / मतलब',
   'transliteration': 'लिप्यंतरण (उच्चारण)',
-  'translation': 'अनुवाद (अर्थ)',
-  'hindi': 'हिंदी',
-  'english': 'अंग्रेज़ी',
+  // Notice, Education & Campus verbs & nouns
+  'all the students are required to come down in the hall': 'सभी विद्यार्थियों को हॉल (सभागार) में नीचे आने का निर्देश दिया जाता है।',
+  'all students are required to come down in the hall': 'सभी विद्यार्थियों को हॉल में नीचे आने का निर्देश दिया जाता है।',
+  'all the students are requested to come down in the hall': 'सभी विद्यार्थियों से हॉल में नीचे आने का अनुरोध किया जाता है।',
+  'come down in the hall': 'हॉल (सभागार) में नीचे आना',
+  'come down': 'नीचे आना / नीचे आएँ',
+  'come': 'आना / आएँ',
+  'coming': 'आ रहे हैं',
+  'go': 'जाना / जाएँ',
+  'going': 'जा रहे हैं',
+  'hall': 'सभागार (हॉल)',
+  'hall ticket': 'प्रवेश पत्र (हॉल टिकट)',
+  'required': 'आवश्यक / अनिवार्य / निर्देश दिया गया',
+  'requested': 'अनुरोध किया गया',
+  'directed': 'निर्देशित किया गया',
+  'advised': 'सलाह दी गई',
+  'ordered': 'आदेश दिया गया',
+  'informed': 'सूचित किया गया',
+  'prohibited': 'प्रतिबंधित / वर्जित',
+  'allowed': 'अनुमति है',
+  'notice': 'सूचना',
+  'instructions': 'निर्देश',
+  'instruction': 'निर्देश',
+  'attention': 'ध्यान दें',
+  'submit': 'जमा करना / जमा करें',
+  'submitted': 'जमा किया गया',
+  'submission': 'जमा करना',
+  'assignment': 'सत्रीय कार्य (असाइनमेंट)',
+  'assignments': 'सत्रीय कार्य (असाइनमेंट्स)',
+  'fee': 'शुल्क',
+  'fee payment': 'शुल्क भुगतान',
+  'bring': 'साथ लाना / लाएँ',
+  'id card': 'पहचान पत्र (आईडी कार्ड)',
+  'identity card': 'पहचान पत्र',
+  'attend': 'उपस्थित होना / भाग लेना',
+  'meeting': 'बैठक / सभा',
+  'immediately': 'तुरंत / अविलंब',
+  'strictly': 'सख्ती से',
+  'compulsory': 'अनिवार्य',
+  'mandatory': 'अनिवार्य',
+  'optional': 'ऐच्छिक',
+  'silence': 'शांति',
+  'maintain silence': 'शांति बनाए रखें',
+  'maintain': 'बनाए रखें',
+  'class': 'कक्षा',
+  'classes': 'कक्षाएँ',
+  'holiday': 'अवकाश / छुट्टी',
+  'vacation': 'अवकाश / छुट्टियाँ',
+  'declared': 'घोषित किया गया',
+  'suspended': 'स्थगित',
+  'cancelled': 'रद्द किया गया',
+  'postponed': 'स्थगित किया गया',
 };
 
 /**
  * Intelligent Multi-Strategy Hindi Meaning Extractor for offline / local fallback
- * Translates words, phrases, compound clauses, questions, and sentences into native Hindi Devanagari.
+ * Translates words, phrases, compound clauses, notices, questions, and sentences into native Hindi Devanagari.
  */
 export function findHindiMeaning(text: string): string {
   if (!text || !text.trim()) return '';
@@ -1397,27 +1592,240 @@ export function findHindiMeaning(text: string): string {
     return HINDI_MEANING_DICTIONARY[clean];
   }
 
-  // 2. Clean punctuation spaces
+  // 2. Strip leading English articles ('the', 'a', 'an')
+  const withoutLeadingArticle = clean.replace(/^(?:the|a|an)\s+/i, '').trim();
+  if (HINDI_MEANING_DICTIONARY[withoutLeadingArticle]) {
+    return HINDI_MEANING_DICTIONARY[withoutLeadingArticle];
+  }
+
+  // 3. Clean punctuation spaces
   const noPunct = clean.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
   if (HINDI_MEANING_DICTIONARY[noPunct]) {
     return HINDI_MEANING_DICTIONARY[noPunct];
   }
 
-  // 3. Multi-segment split on commas, newlines, semicolons, and " and "
-  if (raw.includes('\n') || raw.includes(',') || raw.includes(';') || /\b(and|&)\b/i.test(raw)) {
-    const segments = raw.split(/[\n,;]|(?:\s+(?:and|&)\s+)/i).map(s => s.trim()).filter(Boolean);
+  // 4. Multi-segment split on newlines, semicolons, and commas (ONLY if comma isn't just separating numbers)
+  if (raw.includes('\n') || raw.includes(';') || (raw.includes(',') && !/\d,\d/.test(raw))) {
+    const segments = raw.split(/[\n;]|,\s+/).map(s => s.trim()).filter(Boolean);
     if (segments.length > 1) {
       const translatedSegments = segments.map(seg => findHindiMeaning(seg));
-      const hasAnyMeaning = translatedSegments.some(s => s && !s.startsWith('भावार्थ:'));
+      const hasAnyMeaning = translatedSegments.some(s => s && !s.startsWith('अर्थ:'));
       if (hasAnyMeaning) {
         return translatedSegments.join(', ');
       }
     }
   }
 
-  // 4. Common question pattern handling
+  // 5. Meaning & Correctness Assertions (e.g. "this is not the right meaning", "this is the proper meaning")
+  const copulaMeaningMatch = noPunct.match(/^(this|that|it)\s+is\s+(not\s+)?(?:the\s+)?(right|proper|correct|wrong|true|actual)\s+meaning(?:\s*,?\s*(.+))?$/i);
+  if (copulaMeaningMatch) {
+    const [, subj, neg, adj, tail] = copulaMeaningMatch;
+    const subjH = (subj.toLowerCase() === 'it' || subj.toLowerCase() === 'this') ? 'यह' : 'वह';
+    const adjH = adj.toLowerCase() === 'wrong' ? 'गलत' : adj.toLowerCase() === 'proper' ? 'उचित' : 'सही';
+    let res = `${subjH} ${adjH} अर्थ ${neg ? 'नहीं है' : 'है'}।`;
+    if (tail && /fix/i.test(tail)) {
+      res += ' (कृपया इसे ठीक करें)';
+    }
+    return res;
+  }
+
+  // 6. Copula State (e.g. "this is not right", "this is wrong", "this is not working")
+  const copulaStateMatch = noPunct.match(/^(this|that|it)\s+is\s+(not\s+)?(right|correct|proper|wrong|working|fine|good|bad)$/i);
+  if (copulaStateMatch) {
+    const [, subj, neg, state] = copulaStateMatch;
+    const subjH = (subj.toLowerCase() === 'it' || subj.toLowerCase() === 'this') ? 'यह' : 'वह';
+    const isNeg = !!neg;
+    if (state.toLowerCase() === 'working') {
+      return `${subjH} काम ${isNeg ? 'नहीं कर रहा है' : 'कर रहा है'}।`;
+    }
+    const stateMap: Record<string, string> = {
+      right: 'सही',
+      correct: 'सही',
+      proper: 'उचित',
+      wrong: 'गलत',
+      good: 'अच्छा',
+      bad: 'खराब',
+      fine: 'ठीक',
+    };
+    const stateH = stateMap[state.toLowerCase()] || 'सही';
+    return `${subjH} ${stateH} ${isNeg ? 'नहीं है' : 'है'}।`;
+  }
+
+  // 7. Prepositional Website / System Feedback (e.g. "in the hosted website it is not giving the proper meaning fix this")
+  if (/^in\s+(?:the\s+)?(?:hosted\s+)?(?:website|site|app|page)/i.test(clean)) {
+    if (/(?:not|now)?\s*(?:giving|showing)\s+(?:the\s+)?(?:proper|right|correct)?\s*meaning/i.test(clean)) {
+      return 'होस्टेड वेबसाइट में यह उचित अर्थ नहीं दे रहा है, कृपया इसे ठीक करें।';
+    }
+    if (/not\s+working/i.test(clean)) {
+      return 'होस्टेड वेबसाइट में यह काम नहीं कर रहा है, कृपया इसे ठीक करें।';
+    }
+  }
+
+  // 8. Giving meaning clauses (e.g. "it is not giving the proper meaning")
+  if (/^(?:it|this)\s+(?:is\s+)?(not\s+|now\s+)?(?:giving|showing)\s+(?:the\s+)?(?:proper|right|correct)?\s*meaning/i.test(clean)) {
+    return 'यह उचित / सही अर्थ नहीं दे रहा है।';
+  }
+
+  // 9. Imperative fix directives
+  if (/^(?:please\s+)?fix\s+this(?:\s+issue|\s+problem)?/i.test(clean)) {
+    return 'कृपया इसे ठीक करें (सुधारें)।';
+  }
+
+  // 10. Direct Campus Directives & Assembly (e.g. "Students please report to the ground")
+  const reportRegex = /^(?:all\s+)?(?:the\s+)?(students|teachers|faculty|staff|candidates|participants|members|boys|girls)?\s*,?\s*(?:please\s+)?(?:are\s+(?:requested|directed|required)\s+to\s+)?(?:please\s+)?report\s+to\s+(?:the\s+)?(.+)$/i;
+  const reportMatch = noPunct.match(reportRegex);
+  if (reportMatch) {
+    const [, targetGroup, rawPlace] = reportMatch;
+    const cleanPlace = rawPlace.trim().toLowerCase();
+
+    // Subject
+    let subjectH = '';
+    if (targetGroup) {
+      const isAll = /^all\s+/i.test(clean);
+      const tg = targetGroup.toLowerCase();
+      if (tg === 'students') subjectH = isAll ? 'सभी विद्यार्थी कृपया' : 'विद्यार्थी कृपया';
+      else if (tg === 'teachers') subjectH = isAll ? 'सभी शिक्षक कृपया' : 'शिक्षक कृपया';
+      else if (tg === 'faculty') subjectH = isAll ? 'सभी संकाय सदस्य कृपया' : 'संकाय सदस्य कृपया';
+      else if (tg === 'staff') subjectH = isAll ? 'सभी कर्मचारी कृपया' : 'कर्मचारी कृपया';
+      else if (tg === 'candidates') subjectH = isAll ? 'सभी उम्मीदवार कृपया' : 'उम्मीदवार कृपया';
+      else if (tg === 'participants') subjectH = isAll ? 'सभी प्रतिभागी कृपया' : 'प्रतिभागी कृपया';
+      else subjectH = `${tg} कृपया`;
+    } else {
+      subjectH = 'कृपया';
+    }
+
+    // Place translation
+    let placeH = '';
+    if (cleanPlace === 'ground') placeH = 'मैदान';
+    else if (cleanPlace === 'auditorium') placeH = 'सभागार';
+    else if (cleanPlace === 'hall') placeH = 'हॉल';
+    else if (cleanPlace === 'office' || cleanPlace === 'admin office') placeH = 'कार्यालय';
+    else if (cleanPlace === 'library') placeH = 'पुस्तकालय';
+    else if (cleanPlace === 'lab' || cleanPlace === 'laboratory') placeH = 'प्रयोगशाला';
+    else if (cleanPlace === 'canteen') placeH = 'कैंटीन';
+    else if (cleanPlace === 'seminar hall') placeH = 'सेमिनार हॉल';
+    else if (cleanPlace === 'classroom' || cleanPlace === 'class') placeH = 'कक्षा';
+    else {
+      placeH = HINDI_MEANING_DICTIONARY[cleanPlace] || PHONETIC_LEXICON[cleanPlace] || cleanPlace;
+    }
+
+    return `${subjectH} ${placeH} में उपस्थित हों`;
+  }
+
+  // 11. Institutional, Notice & Directive Sentence Patterns
+  // e.g. "All (the) students are required to come down in the hall"
+  const directiveRegex = /^(?:all\s+)?(?:the\s+)?(students|teachers|faculty|staff|candidates|participants|members|visitors|employees|boys|girls)\s+(?:are\s+)?(required|requested|directed|advised|ordered|informed|instructed|expected)\s+to\s+(.+)$/i;
+  const directiveMatch = noPunct.match(directiveRegex);
+  if (directiveMatch) {
+    const [, targetGroup, modalAction, verbClause] = directiveMatch;
+
+    // Subject translation
+    const subjectMap: Record<string, string> = {
+      students: 'सभी विद्यार्थियों / छात्रों को',
+      teachers: 'सभी प्राध्यापकों / शिक्षकों से',
+      faculty: 'सभी संकाय सदस्यों से',
+      staff: 'सभी कर्मचारियों से',
+      candidates: 'सभी परीक्षार्थियों / उम्मीदवारों को',
+      participants: 'सभी प्रतिभागियों को',
+      members: 'सभी सदस्यों से',
+      visitors: 'सभी आगंतुकों से',
+      employees: 'सभी कर्मचारियों को',
+      boys: 'सभी छात्रों (छात्र वर्ग) को',
+      girls: 'सभी छात्राओं को',
+    };
+    const subjectHindi = subjectMap[targetGroup.toLowerCase()] || `सभी ${targetGroup} को`;
+
+    // Modal translation
+    const modalMap: Record<string, string> = {
+      required: 'निर्देश दिया जाता है (अनिवार्य है)',
+      requested: 'अनुरोध किया जाता है',
+      directed: 'निर्देशित किया जाता है',
+      advised: 'सलाह दी जाती है',
+      ordered: 'आदेश दिया जाता है',
+      informed: 'सूचित किया जाता है',
+      instructed: 'निर्देश दिया जाता है',
+      expected: 'अपेक्षा की जाती है',
+    };
+    const modalHindi = modalMap[modalAction.toLowerCase()] || 'निर्देश दिया जाता है';
+
+    // Parse verbClause
+    let actionHindi = '';
+    const cleanVerb = verbClause.trim();
+
+    if (/^come\s+down\s+(in|to|at)\s+(the\s+)?(hall|auditorium|ground|lobby)/i.test(cleanVerb)) {
+      const hallMatch = cleanVerb.match(/(hall|auditorium|ground|lobby)/i);
+      const place = hallMatch ? (hallMatch[1].toLowerCase() === 'auditorium' ? 'सभागार' : hallMatch[1].toLowerCase() === 'ground' ? 'मैदान' : 'हॉल') : 'हॉल';
+      actionHindi = `${place} में नीचे आने का`;
+    } else if (/^come\s+to\s+(the\s+)?(.+)/i.test(cleanVerb)) {
+      const place = cleanVerb.replace(/^come\s+to\s+(the\s+)?/i, '').trim();
+      const placeHindi = HINDI_MEANING_DICTIONARY[place] || PHONETIC_LEXICON[place] || place;
+      actionHindi = `${placeHindi} में आने का`;
+    } else if (/^assemble\s+(in|at)\s+(the\s+)?(.+)/i.test(cleanVerb)) {
+      const place = cleanVerb.replace(/^assemble\s+(in|at)\s+(the\s+)?/i, '').trim();
+      const placeHindi = HINDI_MEANING_DICTIONARY[place] || PHONETIC_LEXICON[place] || place;
+      actionHindi = `${placeHindi} में एकत्रित होने का`;
+    } else if (/^submit\s+(the\s+)?(.+)/i.test(cleanVerb)) {
+      const item = cleanVerb.replace(/^submit\s+(the\s+)?/i, '').trim();
+      const itemHindi = HINDI_MEANING_DICTIONARY[item] || PHONETIC_LEXICON[item] || item;
+      actionHindi = `${itemHindi} जमा करने का`;
+    } else if (/^attend\s+(the\s+)?(.+)/i.test(cleanVerb)) {
+      const item = cleanVerb.replace(/^attend\s+(the\s+)?/i, '').trim();
+      const itemHindi = HINDI_MEANING_DICTIONARY[item] || PHONETIC_LEXICON[item] || item;
+      actionHindi = `${itemHindi} में उपस्थित होने का`;
+    } else if (/^maintain\s+(silence|discipline)/i.test(cleanVerb)) {
+      actionHindi = cleanVerb.toLowerCase().includes('discipline') ? 'अनुशासन बनाए रखने का' : 'शांति बनाए रखने का';
+    } else if (/^bring\s+(the\s+)?(.+)/i.test(cleanVerb)) {
+      const item = cleanVerb.replace(/^bring\s+(the\s+)?/i, '').trim();
+      const itemHindi = HINDI_MEANING_DICTIONARY[item] || PHONETIC_LEXICON[item] || item;
+      actionHindi = `${itemHindi} साथ लाने का`;
+    } else {
+      const words = cleanVerb.split(/\s+/).map(w => HINDI_MEANING_DICTIONARY[w] || PHONETIC_LEXICON[w] || w);
+      actionHindi = `${words.join(' ')} करने का`;
+    }
+
+    return `${subjectHindi} ${actionHindi} ${modalHindi}।`;
+  }
+
+  // 11. Common notice & sign templates
+  if (/^please\s+(do\s+not|don't)\s+(.+)/i.test(raw)) {
+    const action = raw.replace(/^please\s+(do\s+not|don't)\s+/i, '').replace(/[.!]+$/, '').trim();
+    const actionMeaning = HINDI_MEANING_DICTIONARY[action.toLowerCase()] || PHONETIC_LEXICON[action.toLowerCase()] || action;
+    return `कृपया ${actionMeaning} न करें।`;
+  }
+  if (/^no\s+parking\s*(.*)/i.test(raw)) {
+    const rest = raw.replace(/^no\s+parking\s*/i, '').trim();
+    if (rest) {
+      const restHindi = HINDI_MEANING_DICTIONARY[rest.toLowerCase()] || rest;
+      return `${restHindi} वाहन खड़ा करना मना है (नो पार्किंग)।`;
+    }
+    return 'वाहन खड़ा करना मना है (नो पार्किंग)।';
+  }
+  if (/^no\s+entry\s*(.*)/i.test(raw)) {
+    return 'प्रवेश निषेध है (नो एंट्री)।';
+  }
+  if (/^please\s+(maintain\s+)?silence/i.test(raw)) {
+    return 'कृपया शांति बनाए रखें।';
+  }
+  if (/^keep\s+(left|right|clean|quiet)/i.test(raw)) {
+    if (/clean/i.test(raw)) return 'परिसर स्वच्छ रखें।';
+    if (/quiet/i.test(raw)) return 'शांत रहें।';
+    if (/left/i.test(raw)) return 'बाएँ चलें।';
+    if (/right/i.test(raw)) return 'दाएँ चलें।';
+  }
+
+  // 12. Question pattern handling
   if (/^is\s+everything\s+(working\s+)?(properly|perfectly|smoothly|fine|ok)/i.test(raw)) {
     return 'क्या सब कुछ बिल्कुल ठीक और सुचारू रूप से काम कर रहा है?';
+  }
+  if (/^where\s+(?:is|are)\s+/i.test(raw)) {
+    const entity = raw.replace(/^where\s+(?:is|are)\s+(?:the\s+)?/i, '').replace(/[?]/g, '').trim().toLowerCase();
+    const entityMeaning = HINDI_MEANING_DICTIONARY[entity] || PHONETIC_LEXICON[entity] || entity;
+    return `${entityMeaning} कहाँ है?`;
+  }
+  if (/^what\s+(?:is|are)\s+(?:the\s+)?meaning\s+(?:of\s+)?/i.test(raw)) {
+    const entity = raw.replace(/^what\s+(?:is|are)\s+(?:the\s+)?meaning\s+(?:of\s+)?/i, '').replace(/[?]/g, '').trim().toLowerCase();
+    const entityMeaning = HINDI_MEANING_DICTIONARY[entity] || PHONETIC_LEXICON[entity] || entity;
+    return `${entityMeaning} का क्या अर्थ है?`;
   }
   if (/^what\s+is\s+this/i.test(raw)) {
     return 'यह क्या है?';
@@ -1425,53 +1833,92 @@ export function findHindiMeaning(text: string): string {
   if (/^why\s+are\s+there\s+circle/i.test(raw)) {
     return 'वहाँ वृत्त (गोले) क्यों हैं?';
   }
-  if (/^where\s+is\s+/i.test(raw)) {
-    const entity = raw.replace(/^where\s+is\s+/i, '').replace(/[?]/g, '').trim();
-    const entityMeaning = HINDI_MEANING_DICTIONARY[entity.toLowerCase()] || PHONETIC_LEXICON[entity.toLowerCase()] || entity;
-    return `${entityMeaning} कहाँ है?`;
-  }
   if (/^what\s+is\s+/i.test(raw)) {
-    const entity = raw.replace(/^what\s+is\s+/i, '').replace(/[?]/g, '').trim();
-    const entityMeaning = HINDI_MEANING_DICTIONARY[entity.toLowerCase()] || PHONETIC_LEXICON[entity.toLowerCase()] || entity;
+    const entity = raw.replace(/^what\s+is\s+(?:the\s+)?/i, '').replace(/[?]/g, '').trim().toLowerCase();
+    const entityMeaning = HINDI_MEANING_DICTIONARY[entity] || PHONETIC_LEXICON[entity] || entity;
     return `${entityMeaning} क्या है?`;
   }
 
-  // 5. Hinglish expressions detection
+  // 13. Hinglish expressions detection
   const lowerWords = noPunct.split(/\s+/).filter(Boolean);
   const hinglishMatches = lowerWords.filter(w => HINGLISH_LEXICON[w]);
   if (hinglishMatches.length >= Math.ceil(lowerWords.length * 0.4)) {
-    // Input is primarily Hinglish (Roman Hindi)
     const converted = lowerWords.map(w => HINGLISH_LEXICON[w] || PHONETIC_LEXICON[w] || w);
     return converted.join(' ');
   }
 
-  // 6. Sub-phrase match from longest key to shortest
+  // 14. Strict Sub-phrase Matching:
   const sortedKeys = Object.keys(HINDI_MEANING_DICTIONARY).sort((a, b) => b.length - a.length);
   for (const key of sortedKeys) {
-    if (key.length > 3 && (clean === key || clean.startsWith(key + ' ') || clean.endsWith(' ' + key) || clean.includes(' ' + key + ' '))) {
-      return HINDI_MEANING_DICTIONARY[key];
+    const keyWords = key.split(' ').length;
+    if (keyWords >= 2 && key.length >= clean.length * 0.7) {
+      if (clean === key || clean.startsWith(key + ' ') || clean.endsWith(' ' + key)) {
+        return HINDI_MEANING_DICTIONARY[key];
+      }
     }
   }
 
-  // 7. Word-by-word meaning synthesis with phonetic fallback
+  // 15. Contextual Token Synthesizer for arbitrary sentences
   if (lowerWords.length > 0) {
-    const translated = lowerWords.map(w => {
-      if (HINDI_MEANING_DICTIONARY[w]) return HINDI_MEANING_DICTIONARY[w];
-      if (HINGLISH_LEXICON[w]) return HINGLISH_LEXICON[w];
-      if (PHONETIC_LEXICON[w]) return PHONETIC_LEXICON[w];
-      return null;
-    });
+    const translatedTokens: string[] = [];
+    let i = 0;
 
-    const knownCount = translated.filter(Boolean).length;
-    if (knownCount > 0) {
-      const fullList = lowerWords.map((w, idx) => {
-        return translated[idx] || (PHONETIC_LEXICON[w] || w);
-      });
-      return fullList.join(' ');
+    while (i < lowerWords.length) {
+      // Try 3-word phrase
+      const trigram = lowerWords.slice(i, i + 3).join(' ');
+      if (HINDI_MEANING_DICTIONARY[trigram]) {
+        translatedTokens.push(HINDI_MEANING_DICTIONARY[trigram]);
+        i += 3;
+        continue;
+      }
+
+      // Try 2-word phrase
+      const bigram = lowerWords.slice(i, i + 2).join(' ');
+      if (HINDI_MEANING_DICTIONARY[bigram]) {
+        translatedTokens.push(HINDI_MEANING_DICTIONARY[bigram]);
+        i += 2;
+        continue;
+      }
+
+      // Single word
+      const w = lowerWords[i];
+
+      // Skip standalone English articles that create nonsense like "थे"
+      if (w === 'the' || w === 'a' || w === 'an') {
+        i++;
+        continue;
+      }
+
+      if (w === 'right') {
+        const nextWord = lowerWords[i + 1];
+        if (!nextWord || ['meaning', 'answer', 'way', 'time', 'side', 'choice', 'decision'].includes(nextWord)) {
+          translatedTokens.push('सही');
+        } else {
+          translatedTokens.push('दायाँ');
+        }
+        i++;
+        continue;
+      }
+
+      if (HINDI_MEANING_DICTIONARY[w]) {
+        const cleanVal = HINDI_MEANING_DICTIONARY[w].split('/')[0].trim();
+        translatedTokens.push(cleanVal);
+      } else if (HINGLISH_LEXICON[w]) {
+        translatedTokens.push(HINGLISH_LEXICON[w]);
+      } else if (PHONETIC_LEXICON[w]) {
+        translatedTokens.push(PHONETIC_LEXICON[w]);
+      } else {
+        translatedTokens.push(w);
+      }
+      i++;
+    }
+
+    if (translatedTokens.length > 0) {
+      return translatedTokens.join(' ');
     }
   }
 
-  // 8. Absolute fallback: Return meaning labeled with Hindi prefix and phonetics if available
+  // 16. Absolute fallback
   const phoneticFallback = PHONETIC_LEXICON[clean] || raw;
   return `अर्थ: ${phoneticFallback}`;
 }

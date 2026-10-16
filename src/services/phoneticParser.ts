@@ -31,18 +31,17 @@ function levenshteinDistance(a: string, b: string): number {
   return matrix[b.length][a.length];
 }
 
-// Find closest dictionary match for typo tolerance
 function findClosestLexiconMatch(word: string): string | null {
   const lower = word.toLowerCase();
-  // Avoid aggressive matching for short words to prevent false collisions (e.g. bada matching bad)
+  // Avoid aggressive matching for short words to prevent false collisions
   if (lower.length <= 4) return null;
 
   // Check direct matches first
   if (PHONETIC_LEXICON[lower]) return PHONETIC_LEXICON[lower];
   if (HINGLISH_LEXICON[lower]) return HINGLISH_LEXICON[lower];
 
-  // Try distance 1 for words of length 5-7, distance 2 for longer words
-  const maxDist = lower.length >= 7 ? 2 : 1;
+  // Only allow distance 1 (distance 2 causes false matches like meaning->making or hosted->hostel)
+  const maxDist = 1;
   let bestMatch: string | null = null;
   let minDistance = maxDist + 1;
 
@@ -55,7 +54,7 @@ function findClosestLexiconMatch(word: string): string | null {
     if (dist <= maxDist && dist < minDistance) {
       minDistance = dist;
       bestMatch = PHONETIC_LEXICON[dictKey];
-      if (dist === 1) break; // Good enough
+      if (dist === 1) break;
     }
   }
 

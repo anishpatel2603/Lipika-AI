@@ -241,8 +241,10 @@ CRITICAL RULES:
    - "Smart Traffic Management" -> "स्मार्ट ट्रैफिक मैनेजमेंट"
    - "Cyber Security" -> "साइबर सिक्योरिटी"
    - "Machine Learning" -> "मशीन लर्निंग"
-   - "Technology" -> "टेक्नोलॉजी"
    - "Is everything working perfectly" -> "इज़ एवरीथिंग वर्किंग परफेक्टली"
+   - "this is not the right meaning" -> "दिस इज़ नॉट द राइट मीनिंग"
+   - "in the hosted website it is not giving the proper meaning fix this" -> "इन द होस्टेड वेबसाइट इट इज़ नॉट गिविंग द प्रॉपर मीनिंग फिक्स दिस"
+   - "Students please report to the ground" -> "स्टूडेंट्स प्लीज रिपोर्ट टू द ग्राउंड"
 
 2. FOR "hindi_meaning": Provide the meaningful Hindi translation/explanation (अर्थ)!
    - "Good Morning" -> "शुभ प्रभात / सुप्रभात"
@@ -255,7 +257,11 @@ CRITICAL RULES:
    - "Machine Learning" -> "मशीन लर्निंग (यंत्र अधिगम)"
    - "Technology" -> "प्रौद्योगिकी / तकनीक"
    - "Is everything working perfectly" -> "क्या सब कुछ बिल्कुल ठीक से काम कर रहा है?"
+   - "this is not the right meaning" -> "यह सही अर्थ नहीं है।"
+   - "in the hosted website it is not giving the proper meaning fix this" -> "होस्टेड वेबसाइट में यह उचित अर्थ नहीं दे रहा है, कृपया इसे ठीक करें।"
+   - "Students please report to the ground" -> "विद्यार्थी कृपया मैदान में उपस्थित हों"
    - "Emergency Exit" -> "आपातकालीन निकास"
+   - "Where is the library" -> "पुस्तकालय कहाँ है?"
    - If input is Hinglish (already Hindi in Roman script, e.g. "Namaste aap kaise ho"), transliterated_text is "नमस्ते आप कैसे हो" and hindi_meaning is "नमस्ते, आप कैसे हैं?"
 
 3. ZERO SPELLING MISTAKES & TYPO TOLERANCE:
