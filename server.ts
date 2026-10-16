@@ -99,6 +99,7 @@ app.post('/api/image-transliterate', async (req: Request, res: Response) => {
       success: true,
       detected_text: ocrResult.text,
       transliterated_text: agentResult.transliteration,
+      meaning: agentResult.meaning,
       ocr_confidence: ocrResult.confidence,
       transliteration_confidence: agentResult.confidence,
       steps: [

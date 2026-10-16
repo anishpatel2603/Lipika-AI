@@ -1048,3 +1048,430 @@ export const OCR_TYPO_REPLACEMENTS: [RegExp, string][] = [
   [/\bpls\b/gi, 'please'],
   [/\bplz\b/gi, 'please'],
 ];
+
+// --- Comprehensive Hindi Meaning / Translation Dictionary (अर्थ) ---
+export const HINDI_MEANING_DICTIONARY: Record<string, string> = {
+  // Common full phrases & questions
+  'welcome to mumbai': 'मुंबई में आपका स्वागत है',
+  'welcome': 'स्वागत है',
+  'good morning': 'शुभ प्रभात',
+  'good evening': 'शुभ संध्या',
+  'good afternoon': 'शुभ दोपहर',
+  'good night': 'शुभ रात्रि',
+  'thank you': 'आपका धन्यवाद',
+  'thanks': 'धन्यवाद',
+  'please': 'कृपया',
+  'sorry': 'क्षमा करें / माफ़ कीजिए',
+  'goodbye': 'अलविदा',
+  'bye': 'अलविदा / फिर मिलेंगे',
+  'how are you': 'आप कैसे हैं?',
+  'how are you doing': 'आप कैसे हैं? / आपका क्या हाल है?',
+  'how are you doing today': 'आज आप कैसे हैं?',
+  'is everything working properly': 'क्या सब कुछ ठीक से काम कर रहा है?',
+  'is everything working perfectly': 'क्या सब कुछ बिल्कुल ठीक से काम कर रहा है?',
+  'is everything working properly and smoothly without any issues': 'क्या सब कुछ बिना किसी समस्या के सुचारू और ठीक रूप से काम कर रहा है?',
+  'namaste aap kaise ho': 'नमस्ते, आप कैसे हैं?',
+  'mera project ready ho gaya hai': 'मेरा प्रोजेक्ट तैयार हो गया है।',
+  'kal exam hai': 'कल परीक्षा है।',
+
+  // Academic & Campus
+  'pillai college of engineering': 'पिल्लई अभियांत्रिकी महाविद्यालय (इंजीनियरिंग कॉलेज)',
+  'college of engineering': 'इंजीनियरिंग कॉलेज (अभियांत्रिकी महाविद्यालय)',
+  'department of computer engineering': 'कंप्यूटर इंजीनियरिंग विभाग',
+  'computer science department': 'कंप्यूटर विज्ञान विभाग',
+  'computer science': 'कंप्यूटर विज्ञान',
+  'artificial intelligence': 'कृत्रिम बुद्धिमत्ता (एआई)',
+  'machine learning': 'मशीन लर्निंग (यंत्र अधिगम)',
+  'deep learning': 'डीप लर्निंग (गहन अधिगम)',
+  'cyber security': 'साइबर सुरक्षा',
+  'cloud computing': 'क्लाउड कंप्यूटिंग',
+  'smart traffic management': 'स्मार्ट यातायात प्रबंधन',
+  'smart traffic management system': 'स्मार्ट यातायात प्रबंधन प्रणाली',
+  'library and examination hall': 'पुस्तकालय एवं परीक्षा कक्ष',
+  'examination hall': 'परीक्षा भवन / परीक्षा कक्ष',
+  'library': 'पुस्तकालय',
+  'classroom': 'कक्षा कक्ष',
+  'laboratory': 'प्रयोगशाला (लैब)',
+  'auditorium': 'सभागार',
+  'canteen': 'अल्पाहार गृह (कैंटीन)',
+  'office': 'कार्यालय / दफ़्तर',
+  'principal': 'प्राचार्य',
+  'head of department': 'विभागाध्यक्ष',
+  'student': 'विद्यार्थी / छात्र',
+  'students': 'विद्यार्थीगण / छात्रगण',
+  'teacher': 'शिक्षक / अध्यापक',
+  'teachers': 'शिक्षकगण',
+  'professor': 'प्राध्यापक',
+  'examination': 'परीक्षा',
+  'exam': 'परीक्षा',
+  'syllabus': 'पाठ्यक्रम',
+  'attendance': 'उपस्थिति (हाज़िरी)',
+  'admission': 'प्रवेश / दाखिला',
+  'fees': 'शुल्क / फीस',
+
+  // Signage, Navigation & Transit
+  'emergency exit': 'आपातकालीन निकास',
+  'exit': 'निकास द्वार / बाहर जाने का रास्ता',
+  'entry': 'प्रवेश द्वार',
+  'entrance': 'मुख्य प्रवेश द्वार',
+  'no parking': 'वाहन खड़ा करना मना है (पार्किंग निषेध)',
+  'parking': 'वाहन पार्किंग स्थल',
+  'ticket counter': 'टिकट खिड़की / काउंटर',
+  'metro station': 'मेट्रो स्टेशन',
+  'railway station': 'रेलवे स्टेशन',
+  'bus stop': 'बस स्टॉप / बस पड़ाव',
+  'airport': 'हवाई अड्डा (विमानपत्तन)',
+  'flight': 'उड़ान (फ्लाइट)',
+  'toll plaza': 'टोल नाका / पथकर प्लाज़ा',
+  'highway traffic police': 'राजमार्ग यातायात पुलिस',
+  'traffic police': 'यातायात पुलिस',
+  'hospital': 'अस्पताल / चिकित्सालय',
+  'clinic': 'दवाखाना / क्लिनिक',
+  'pharmacy': 'दवा की दुकान (औषधालय)',
+  'police station': 'पुलिस थाना',
+  'fire station': 'दमकल केंद्र',
+  'caution': 'सावधानी / सतर्क रहें',
+  'danger': 'खतरा',
+  'warning': 'चेतावनी',
+  'keep quiet': 'शांत रहें',
+  'way out': 'बाहर जाने का मार्ग',
+  'pull': 'खींचिए',
+  'push': 'धकेलिए',
+
+  // Common vocabulary words
+  'computer': 'संगणक (कंप्यूटर)',
+  'science': 'विज्ञान',
+  'technology': 'प्रौद्योगिकी / तकनीक',
+  'engineering': 'अभियांत्रिकी (इंजीनियरिंग)',
+  'system': 'प्रणाली / तंत्र',
+  'network': 'संजाल (नेटवर्क)',
+  'security': 'सुरक्षा',
+  'data': 'आंकड़े / जानकारी (डेटा)',
+  'software': 'सॉफ्टवेयर (प्रोग्राम)',
+  'hardware': 'हार्डवेयर (यंत्रांश)',
+  'internet': 'इंटरनेट (अंतरजाल)',
+  'mobile': 'मोबाइल फोन',
+  'today': 'आज',
+  'tomorrow': 'कल (आने वाला दिन)',
+  'yesterday': 'कल (बीता हुआ दिन)',
+  'day': 'दिन',
+  'night': 'रात',
+  'morning': 'सुबह / प्रातःकाल',
+  'evening': 'शाम / संध्याकाल',
+  'time': 'समय / वक़्त',
+  'water': 'पानी / जल',
+  'food': 'भोजन / खाना',
+  'tea': 'चाय',
+  'coffee': 'कॉफ़ी',
+  'doctor': 'चिकित्सक (डॉक्टर)',
+  'medicine': 'दवा / औषधि',
+  'patient': 'मरीज़ / रोगी',
+  'book': 'किताब / पुस्तक',
+  'help': 'मदद / सहायता',
+  'stop': 'रुकिए / ठहराव',
+  'start': 'शुरू कीजिए / प्रारंभ',
+  'open': 'खुला है',
+  'closed': 'बंद है',
+  'close': 'बंद करें',
+  'yes': 'हाँ',
+  'no': 'नहीं',
+  'right': 'दाएँ / सही',
+  'left': 'बाएँ',
+  'straight': 'सीधे',
+  'ahead': 'आगे',
+  'behind': 'पीछे',
+  'up': 'ऊपर',
+  'down': 'नीचे',
+  'inside': 'अंदर',
+  'outside': 'बाहर',
+  'good': 'अच्छा / उत्तम',
+  'bad': 'बुरा / खराब',
+  'great': 'बहुत बढ़िया / महान',
+  'problem': 'समस्या / कठिनाई',
+  'issue': 'समस्या / मुद्दा',
+  'issues': 'समस्याएँ',
+  'solution': 'समाधान / हल',
+  'speed': 'गति / रफ़्तार',
+  'slow': 'धीमा',
+  'fast': 'तेज़',
+  'easy': 'आसान / सरल',
+  'difficult': 'कठिन / मुश्किल',
+  'smooth': 'सहज / सुगम',
+  'smoothly': 'सुगमता से / सुचारू रूप से',
+  'proper': 'उचित / सही',
+  'properly': 'उचित ढंग से / ठीक से',
+  'perfect': 'बिल्कुल सही / त्रुटिहीन',
+  'perfectly': 'पूरी तरह से / बिल्कुल सही रूप में',
+  'everything': 'सब कुछ',
+  'everyone': 'हर कोई / सब लोग',
+  'something': 'कुछ',
+  'nothing': 'कुछ नहीं',
+  'work': 'काम / कार्य',
+  'working': 'काम कर रहा है',
+  'without': 'बिना / के बिना',
+  'with': 'के साथ',
+
+  // Questions & Conversational Phrases
+  'what is this': 'यह क्या है?',
+  'what is this why are there circle': 'यह क्या है और वहाँ वृत्त (सर्कल) क्यों हैं?',
+  'what is this why are there circles': 'यह क्या है और वहाँ वृत्त (सर्कल) क्यों हैं?',
+  'why are there circle': 'वहाँ वृत्त (सर्कल) क्यों हैं?',
+  'why are there circles': 'वहाँ वृत्त (सर्कल) क्यों हैं?',
+  'what is your name': 'आपका नाम क्या है?',
+  'where are you going': 'आप कहाँ जा रहे हैं?',
+  'what are you doing': 'आप क्या कर रहे हैं?',
+  'i am fine': 'मैं ठीक हूँ',
+  'nice to meet you': 'आपसे मिलकर बहुत खुशी हुई',
+  'see you soon': 'जल्द ही फिर मिलेंगे',
+  'take care': 'अपना ख्याल रखें',
+  'have a nice day': 'आपका दिन शुभ हो',
+  'have a great day': 'आपका दिन बहुत बढ़िया हो',
+  'happy birthday': 'जन्मदिन की हार्दिक शुभकामनाएँ',
+  'congratulations': 'बधाई हो / हार्दिक बधाई',
+  'best of luck': 'शुभकामनाएँ',
+  'all the best': 'शुभकामनाएँ / सफलता मिले',
+
+  // System & App Testing
+  'is everything working': 'क्या सब कुछ ठीक से काम कर रहा है?',
+  'is everything okay': 'क्या सब कुछ ठीक है?',
+  'everything is working properly': 'सब कुछ ठीक से काम कर रहा है।',
+  'everything is working perfectly': 'सब कुछ बिल्कुल ठीक से काम कर रहा है।',
+  'is it working': 'क्या यह काम कर रहा है?',
+  'it is working': 'यह काम कर रहा है।',
+  'test the agent': 'एजेंट का परीक्षण करें',
+  'agent testing': 'एजेंट परीक्षण',
+  'spelling mistake': 'वर्तनी की गलती (स्पेलिंग मिस्टेक)',
+  'spelling mistakes': 'वर्तनी की गलतियाँ',
+  'no spelling mistakes': 'कोई वर्तनी त्रुटि नहीं',
+  'zero spelling mistakes': 'शून्य वर्तनी त्रुटि',
+
+  // Signage & Facilities
+  'welcome to our college': 'हमारे महाविद्यालय (कॉलेज) में आपका स्वागत है',
+  'welcome to our campus': 'हमारे परिसर (कैंपस) में आपका स्वागत है',
+  'welcome to pillai college of engineering': 'पिल्लई अभियांत्रिकी महाविद्यालय में आपका स्वागत है',
+  'department of information technology': 'सूचना प्रौद्योगिकी विभाग',
+  'department of mechanical engineering': 'यांत्रिक अभियांत्रिकी (मैकेनिकल) विभाग',
+  'room no': 'कमरा संख्या / कक्ष संख्या',
+  'room number': 'कक्ष संख्या',
+  'entry prohibited': 'प्रवेश निषेध',
+  'no entry': 'प्रवेश बंद / प्रवेश निषेध',
+  'no smoking': 'धूम्रपान निषेध',
+  'keep clean': 'परिसर स्वच्छ रखें',
+  'silence please': 'कृपया शांति बनाए रखें',
+  'staff only': 'केवल कर्मचारियों के लिए',
+  'visitors not allowed': 'आगंतुकों का प्रवेश वर्जित है',
+  'drinking water': 'पीने का पानी (पेयजल)',
+  'washroom': 'शौचालय (वॉशरूम)',
+  'toilet': 'शौचालय',
+  'gents': 'पुरुष',
+  'ladies': 'महिलाएँ',
+  'male': 'पुरुष',
+  'female': 'महिला',
+  'emergency': 'आपातकाल',
+  'fire extinguisher': 'अग्निशामक यंत्र',
+  'fire alarm': 'अग्नि चेतावनी सायरन',
+  'lift': 'लिफ्ट (उत्थापक)',
+  'elevator': 'लिफ्ट',
+  'stairs': 'सीढ़ियाँ',
+  'staircase': 'सीढ़ियाँ',
+  'first floor': 'प्रथम तल (पहली मंजिल)',
+  'second floor': 'द्वितीय तल (दूसरी मंजिल)',
+  'third floor': 'तृतीय तल (तीसरी मंजिल)',
+  'ground floor': 'भू-तल (ग्राउंड फ्लोर)',
+  'basement': 'तहखाना (बेसमेंट)',
+  'main gate': 'मुख्य द्वार',
+  'admin office': 'प्रशासनिक कार्यालय',
+  'administrative office': 'प्रशासनिक कार्यालय',
+  'accounts department': 'लेखा विभाग',
+  'account section': 'लेखा अनुभाग (अकाउंट्स)',
+  'fees counter': 'शुल्क काउंटर',
+  'security cabin': 'सुरक्षा कक्ष',
+  'security check': 'सुरक्षा जाँच',
+  'principal office': 'प्राचार्य कार्यालय',
+  'staff room': 'अध्यापक कक्ष (स्टाफ रूम)',
+  'conference hall': 'सम्मेलन कक्ष',
+  'seminar hall': 'संगोष्ठी भवन (सेमिनार हॉल)',
+  'placement cell': 'रोजगार प्रकोष्ठ (प्लेसमेंट सेल)',
+
+  // Everyday Grammar & Words
+  'what': 'क्या',
+  'why': 'क्यों',
+  'where': 'कहाँ',
+  'when': 'कब',
+  'how': 'कैसे',
+  'who': 'कौन',
+  'which': 'कौन सा',
+  'whose': 'किसका',
+  'is': 'है',
+  'are': 'हैं',
+  'am': 'हूँ',
+  'was': 'था / थी',
+  'were': 'थे / थीं',
+  'will': 'होगा / करेगा',
+  'can': 'सकता है',
+  'do': 'करें',
+  'does': 'करता है',
+  'did': 'किया',
+  'have': 'पास है / है',
+  'has': 'पास है / है',
+  'had': 'था',
+  'it': 'यह',
+  'this': 'यह',
+  'that': 'वह',
+  'these': 'ये',
+  'those': 'वे',
+  'there': 'वहाँ',
+  'here': 'यहाँ',
+  'all': 'सभी / सब',
+  'every': 'प्रत्येक / हर',
+  'we': 'हम',
+  'you': 'आप / तुम',
+  'he': 'वह',
+  'she': 'वह',
+  'they': 'वे / लोग',
+  'i': 'मैं',
+  'my': 'मेरा / मेरी / मेरे',
+  'your': 'आपका / आपकी / आपके',
+  'our': 'हमारा / हमारी / हमारे',
+  'their': 'उनका / उनकी / उनके',
+  'and': 'और',
+  'or': 'या',
+  'but': 'लेकिन / परन्तु',
+  'because': 'क्योंकि',
+  'so': 'इसलिए',
+  'if': 'यदि / अगर',
+  'then': 'तो / फिर',
+  'also': 'भी',
+  'not': 'नहीं',
+  'never': 'कभी नहीं',
+  'always': 'हमेशा / सदैव',
+  'now': 'अब / अभी',
+  'very': 'बहुत',
+  'much': 'अधिक',
+  'more': 'और अधिक / ज़्यादा',
+  'many': 'कई / बहुत सारे',
+  'few': 'कुछ / कम',
+  'new': 'नया',
+  'old': 'पुराना',
+  'big': 'बड़ा',
+  'small': 'छोटा',
+  'high': 'उच्च / ऊँचा',
+  'low': 'निम्न / कम',
+  'first': 'पहला / प्रथम',
+  'last': 'अंतिम / आख़िरी',
+  'next': 'अगला',
+  'previous': 'पिछला',
+  'clean': 'स्वच्छ / साफ़',
+  'dirty': 'गंदा',
+  'safe': 'सुरक्षित',
+  'error': 'त्रुटि / गलती',
+  'mistake': 'गलती',
+  'spelling': 'वर्तनी (स्पेलिंग)',
+  'agent': 'एजेंट / प्रतिनिधि',
+  'circle': 'गोला (वृत्त)',
+  'circles': 'गोले (वृत्त)',
+  'project': 'परियोजना (प्रोजेक्ट)',
+  'resume': 'बायोडाटा (रेज़्यूमे)',
+  'name': 'नाम',
+  'word': 'शब्द',
+  'line': 'पंक्ति / लाइन',
+  'meaning': 'अर्थ / मतलब',
+  'transliteration': 'लिप्यंतरण (उच्चारण)',
+  'translation': 'अनुवाद (अर्थ)',
+  'hindi': 'हिंदी',
+  'english': 'अंग्रेज़ी',
+};
+
+/**
+ * Intelligent Multi-Strategy Hindi Meaning Extractor for offline / local fallback
+ * Translates words, phrases, compound clauses, questions, and sentences into native Hindi Devanagari.
+ */
+export function findHindiMeaning(text: string): string {
+  if (!text || !text.trim()) return '';
+
+  const raw = text.trim();
+  const clean = raw.toLowerCase().replace(/[?,.!;:]+$/g, '').trim();
+
+  // 1. Direct match on clean input
+  if (HINDI_MEANING_DICTIONARY[clean]) {
+    return HINDI_MEANING_DICTIONARY[clean];
+  }
+
+  // 2. Clean punctuation spaces
+  const noPunct = clean.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (HINDI_MEANING_DICTIONARY[noPunct]) {
+    return HINDI_MEANING_DICTIONARY[noPunct];
+  }
+
+  // 3. Multi-segment split on commas, newlines, semicolons, and " and "
+  if (raw.includes('\n') || raw.includes(',') || raw.includes(';') || /\b(and|&)\b/i.test(raw)) {
+    const segments = raw.split(/[\n,;]|(?:\s+(?:and|&)\s+)/i).map(s => s.trim()).filter(Boolean);
+    if (segments.length > 1) {
+      const translatedSegments = segments.map(seg => findHindiMeaning(seg));
+      const hasAnyMeaning = translatedSegments.some(s => s && !s.startsWith('भावार्थ:'));
+      if (hasAnyMeaning) {
+        return translatedSegments.join(', ');
+      }
+    }
+  }
+
+  // 4. Common question pattern handling
+  if (/^is\s+everything\s+(working\s+)?(properly|perfectly|smoothly|fine|ok)/i.test(raw)) {
+    return 'क्या सब कुछ बिल्कुल ठीक और सुचारू रूप से काम कर रहा है?';
+  }
+  if (/^what\s+is\s+this/i.test(raw)) {
+    return 'यह क्या है?';
+  }
+  if (/^why\s+are\s+there\s+circle/i.test(raw)) {
+    return 'वहाँ वृत्त (गोले) क्यों हैं?';
+  }
+  if (/^where\s+is\s+/i.test(raw)) {
+    const entity = raw.replace(/^where\s+is\s+/i, '').replace(/[?]/g, '').trim();
+    const entityMeaning = HINDI_MEANING_DICTIONARY[entity.toLowerCase()] || PHONETIC_LEXICON[entity.toLowerCase()] || entity;
+    return `${entityMeaning} कहाँ है?`;
+  }
+  if (/^what\s+is\s+/i.test(raw)) {
+    const entity = raw.replace(/^what\s+is\s+/i, '').replace(/[?]/g, '').trim();
+    const entityMeaning = HINDI_MEANING_DICTIONARY[entity.toLowerCase()] || PHONETIC_LEXICON[entity.toLowerCase()] || entity;
+    return `${entityMeaning} क्या है?`;
+  }
+
+  // 5. Hinglish expressions detection
+  const lowerWords = noPunct.split(/\s+/).filter(Boolean);
+  const hinglishMatches = lowerWords.filter(w => HINGLISH_LEXICON[w]);
+  if (hinglishMatches.length >= Math.ceil(lowerWords.length * 0.4)) {
+    // Input is primarily Hinglish (Roman Hindi)
+    const converted = lowerWords.map(w => HINGLISH_LEXICON[w] || PHONETIC_LEXICON[w] || w);
+    return converted.join(' ');
+  }
+
+  // 6. Sub-phrase match from longest key to shortest
+  const sortedKeys = Object.keys(HINDI_MEANING_DICTIONARY).sort((a, b) => b.length - a.length);
+  for (const key of sortedKeys) {
+    if (key.length > 3 && (clean === key || clean.startsWith(key + ' ') || clean.endsWith(' ' + key) || clean.includes(' ' + key + ' '))) {
+      return HINDI_MEANING_DICTIONARY[key];
+    }
+  }
+
+  // 7. Word-by-word meaning synthesis with phonetic fallback
+  if (lowerWords.length > 0) {
+    const translated = lowerWords.map(w => {
+      if (HINDI_MEANING_DICTIONARY[w]) return HINDI_MEANING_DICTIONARY[w];
+      if (HINGLISH_LEXICON[w]) return HINGLISH_LEXICON[w];
+      if (PHONETIC_LEXICON[w]) return PHONETIC_LEXICON[w];
+      return null;
+    });
+
+    const knownCount = translated.filter(Boolean).length;
+    if (knownCount > 0) {
+      const fullList = lowerWords.map((w, idx) => {
+        return translated[idx] || (PHONETIC_LEXICON[w] || w);
+      });
+      return fullList.join(' ');
+    }
+  }
+
+  // 8. Absolute fallback: Return meaning labeled with Hindi prefix and phonetics if available
+  const phoneticFallback = PHONETIC_LEXICON[clean] || raw;
+  return `अर्थ: ${phoneticFallback}`;
+}

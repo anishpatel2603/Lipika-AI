@@ -25,15 +25,19 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   }
 }
 
-export function downloadAsTxt(original: string, transliteration: string, source: string = 'text'): void {
+export function downloadAsTxt(
+  original: string,
+  transliteration: string,
+  source: string = 'text',
+  meaning?: string
+): void {
   const content = `================================================
-LIPIKA AI — TRANSLITERATION REPORT
+LIPIKA AI — TRANSLITERATION & LINGUISTIC REPORT
 "See it. Read it. Speak it."
 ================================================
 Date: ${new Date().toLocaleString()}
 Source: ${source.toUpperCase()}
-Task: English to Hindi Transliteration (Devanagari script)
-Note: Phonetic transliteration (Pronunciation preserved, not translation)
+Task: English to Hindi Transliteration & Meaning
 
 ------------------------------------------------
 ORIGINAL INPUT:
@@ -41,9 +45,14 @@ ORIGINAL INPUT:
 ${original}
 
 ------------------------------------------------
-HINDI TRANSLITERATION:
+HINDI TRANSLITERATION (उच्चारण):
 ------------------------------------------------
 ${transliteration}
+
+------------------------------------------------
+HINDI MEANING / TRANSLATION (अर्थ):
+------------------------------------------------
+${meaning || 'N/A'}
 
 ================================================
 Generated with Lipika AI (https://lipika.ai)
@@ -53,7 +62,7 @@ Generated with Lipika AI (https://lipika.ai)
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Lipika-Transliteration-${Date.now()}.txt`;
+  a.download = `Lipika-Report-${Date.now()}.txt`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -68,11 +77,12 @@ export async function downloadAsPdf(
   original: string,
   transliteration: string,
   confidence: number = 0.95,
-  source: string = 'text'
+  source: string = 'text',
+  meaning?: string
 ): Promise<void> {
   const canvas = document.createElement('canvas');
   canvas.width = 1200;
-  canvas.height = 1400;
+  canvas.height = meaning ? 1650 : 1400;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
@@ -108,57 +118,80 @@ export async function downloadAsPdf(
   // Original Section
   ctx.fillStyle = '#475569';
   ctx.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('ORIGINAL ENGLISH INPUT', 80, 270);
+  ctx.fillText('ORIGINAL INPUT (LATIN SCRIPT)', 80, 260);
 
   // Box for Original
   ctx.fillStyle = '#F8FAFC';
   ctx.strokeStyle = '#E2E8F0';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.roundRect(80, 290, 1040, 240, 12);
+  ctx.roundRect(80, 280, 1040, 160, 12);
   ctx.fill();
   ctx.stroke();
 
   ctx.fillStyle = '#0F172A';
   ctx.font = '22px "Plus Jakarta Sans", monospace';
-  wrapText(ctx, original, 110, 340, 980, 36);
+  wrapText(ctx, original, 110, 330, 980, 36);
 
   // Hindi Transliteration Section
   ctx.fillStyle = '#EA580C';
   ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('HINDI TRANSLITERATION (DEVANAGARI SCRIPT)', 80, 590);
+  ctx.fillText('HINDI TRANSLITERATION (DEVANAGARI PHONETICS • उच्चारण)', 80, 490);
 
   // Box for Output
   ctx.fillStyle = '#FFFBEB';
   ctx.strokeStyle = '#FDE68A';
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.roundRect(80, 610, 1040, 360, 16);
+  ctx.roundRect(80, 510, 1040, 240, 16);
   ctx.fill();
   ctx.stroke();
 
   ctx.fillStyle = '#1E293B';
   ctx.font = 'bold 36px "Noto Sans Devanagari", sans-serif';
-  wrapText(ctx, transliteration, 115, 690, 970, 54);
+  wrapText(ctx, transliteration, 115, 580, 970, 50);
+
+  let nextY = 800;
+
+  // Hindi Meaning Section
+  if (meaning) {
+    ctx.fillStyle = '#0D9488';
+    ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('HINDI MEANING / TRANSLATION (हिंदी अर्थ)', 80, nextY);
+
+    ctx.fillStyle = '#F0FDFA';
+    ctx.strokeStyle = '#99F6E4';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(80, nextY + 20, 1040, 220, 16);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#0F766E';
+    ctx.font = 'bold 32px "Noto Sans Devanagari", sans-serif';
+    wrapText(ctx, meaning, 115, nextY + 90, 970, 46);
+
+    nextY += 280;
+  }
 
   // Meta pills & badge
   ctx.fillStyle = '#F1F5F9';
   ctx.beginPath();
-  ctx.roundRect(80, 1020, 1040, 120, 12);
+  ctx.roundRect(80, nextY, 1040, 100, 12);
   ctx.fill();
 
   ctx.fillStyle = '#334155';
-  ctx.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText(`AI Agent Confidence: ${Math.round(confidence * 100)}% (${confidence >= 0.9 ? 'High' : 'Normal'})`, 110, 1065);
+  ctx.font = 'bold 18px "Plus Jakarta Sans", sans-serif';
+  ctx.fillText(`AI Agent Confidence: ${Math.round(confidence * 100)}% (${confidence >= 0.9 ? 'High' : 'Normal'})`, 110, nextY + 40);
 
-  ctx.font = '16px "Plus Jakarta Sans", sans-serif';
+  ctx.font = '15px "Plus Jakarta Sans", sans-serif';
   ctx.fillStyle = '#64748B';
-  ctx.fillText('Phonetically preserved Devanagari script • Not a translation • Zero meaning altered', 110, 1105);
+  ctx.fillText('Phonetic Transliteration + Contextual Hindi Meaning • Generated by Lipika AI', 110, nextY + 70);
 
   // Footer note
   ctx.fillStyle = '#94A3B8';
   ctx.font = '16px "Plus Jakarta Sans", sans-serif';
-  ctx.fillText('Lipika AI — English to Hindi Transliteration Agent Platform', 80, 1340);
+  ctx.fillText('Lipika AI — English to Hindi Transliteration & Linguistic Platform', 80, canvas.height - 40);
 
   // Export to PDF
   const imgData = canvas.toDataURL('image/jpeg', 0.95);

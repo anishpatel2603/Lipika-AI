@@ -71,6 +71,7 @@ export const AgentChatDrawer: React.FC<AgentChatDrawerProps> = ({
         role: 'agent',
         content: response.reply,
         transliterationResult: response.updatedTransliteration,
+        meaningResult: response.updatedMeaning,
         timestamp: Date.now(),
       };
 
@@ -161,9 +162,9 @@ export const AgentChatDrawer: React.FC<AgentChatDrawerProps> = ({
                   {/* If agent returned an updated transliteration snippet */}
                   {m.transliterationResult &&
                     m.transliterationResult !== currentTransliterationText && (
-                      <div className="mt-2.5 pt-2 border-t border-slate-200 bg-white/80 p-2 rounded-xl text-slate-900">
+                      <div className="mt-2.5 pt-2 border-t border-slate-200 bg-white/90 p-2.5 rounded-xl text-slate-900">
                         <span className="text-[10px] font-bold text-amber-800 uppercase block mb-1">
-                          Suggested Transliteration:
+                          लिप्यंतरण (उच्चारण • Transliteration):
                         </span>
                         <p className="font-devanagari text-base font-bold text-slate-900">
                           {m.transliterationResult}
@@ -181,6 +182,18 @@ export const AgentChatDrawer: React.FC<AgentChatDrawerProps> = ({
                         )}
                       </div>
                     )}
+
+                  {/* If agent returned an updated Hindi meaning snippet */}
+                  {m.meaningResult && (
+                    <div className="mt-2 pt-2 border-t border-teal-200 bg-teal-50/90 p-2.5 rounded-xl text-teal-950">
+                      <span className="text-[10px] font-bold text-teal-800 uppercase block mb-1">
+                        हिंदी अर्थ (Hindi Meaning • अनुवाद):
+                      </span>
+                      <p className="font-devanagari text-sm font-semibold text-teal-900">
+                        {m.meaningResult}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             );

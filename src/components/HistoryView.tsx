@@ -60,7 +60,8 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelectHistoryItem })
     const matchesSearch =
       !searchQuery ||
       item.originalText.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.transliteratedText.toLowerCase().includes(searchQuery.toLowerCase());
+      item.transliteratedText.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (item.meaning && item.meaning.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesSource && matchesSearch;
   });
 
@@ -179,14 +180,26 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelectHistoryItem })
                 </div>
 
                 {/* Hindi Transliteration */}
-                <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70">
+                <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 mb-2.5">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block mb-0.5">
-                    Hindi (Devanagari)
+                    लिप्यंतरण (उच्चारण • Transliteration)
                   </span>
                   <p className="font-devanagari text-lg font-bold text-slate-900 leading-snug line-clamp-2">
                     {item.transliteratedText}
                   </p>
                 </div>
+
+                {/* Hindi Meaning */}
+                {item.meaning && (
+                  <div className="p-3 rounded-xl bg-teal-50/70 border border-teal-200/80">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 block mb-0.5">
+                      हिंदी अर्थ (Hindi Meaning)
+                    </span>
+                    <p className="font-devanagari text-base font-semibold text-teal-950 leading-snug line-clamp-2">
+                      {item.meaning}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Action Footer */}

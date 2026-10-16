@@ -22,6 +22,7 @@ export interface TransliterateResponse {
   success: boolean;
   original: string;
   transliteration: string;
+  meaning?: string; // Hindi meaning / translation (हिंदी अर्थ)
   confidence: number;
   language: string;
   task: 'transliteration';
@@ -47,6 +48,7 @@ export interface ImageTransliterateResponse {
   success: boolean;
   detected_text: string;
   transliterated_text: string;
+  meaning?: string;
   ocr_confidence: number;
   transliteration_confidence: number;
   steps: AgentStep[];
@@ -58,6 +60,7 @@ export interface HistoryItem {
   source: SourceType;
   originalText: string;
   transliteratedText: string;
+  meaning?: string;
   confidence: number;
   createdAt: string;
   thumbnailUrl?: string;
@@ -68,5 +71,6 @@ export interface ChatMessage {
   role: 'user' | 'agent' | 'system';
   content: string;
   transliterationResult?: string;
+  meaningResult?: string;
   timestamp: number;
 }

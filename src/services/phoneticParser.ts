@@ -1,4 +1,6 @@
-import { PHONETIC_LEXICON, HINGLISH_LEXICON, OCR_TYPO_REPLACEMENTS } from '../data/phoneticLexicon.js';
+import { PHONETIC_LEXICON, HINGLISH_LEXICON, OCR_TYPO_REPLACEMENTS, findHindiMeaning } from '../data/phoneticLexicon.js';
+
+export { findHindiMeaning };
 
 // Calculate Levenshtein distance for fuzzy typo correction
 function levenshteinDistance(a: string, b: string): number {

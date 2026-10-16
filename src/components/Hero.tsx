@@ -20,11 +20,11 @@ interface HeroProps {
 }
 
 const PRESET_EXAMPLES = [
-  { en: 'Welcome to Mumbai', hi: 'वेलकम टू मुंबई', category: 'City Sign' },
-  { en: 'Pillai College of Engineering', hi: 'पिल्लई कॉलेज ऑफ इंजीनियरिंग', category: 'Education' },
-  { en: 'Artificial Intelligence', hi: 'आर्टिफिशियल इंटेलिजेंस', category: 'Technology' },
-  { en: 'Room No. 204 • Computer Science', hi: 'रूम नं. 204 • कंप्यूटर साइंस', category: 'Notice' },
-  { en: 'Smart Traffic Management', hi: 'स्मार्ट ट्रैफिक मैनेजमेंट', category: 'Public Board' },
+  { en: 'Welcome to Mumbai', hi: 'वेलकम टू मुंबई', meaning: 'मुंबई में आपका स्वागत है', category: 'City Sign' },
+  { en: 'Pillai College of Engineering', hi: 'पिल्लई कॉलेज ऑफ इंजीनियरिंग', meaning: 'पिल्लई अभियांत्रिकी महाविद्यालय', category: 'Education' },
+  { en: 'Artificial Intelligence', hi: 'आर्टिफिशियल इंटेलिजेंस', meaning: 'कृत्रिम बुद्धिमत्ता (एआई)', category: 'Technology' },
+  { en: 'Room No. 204 • Computer Science', hi: 'रूम नं. 204 • कंप्यूटर साइंस', meaning: 'कमरा संख्या 204 • कंप्यूटर विज्ञान', category: 'Notice' },
+  { en: 'Smart Traffic Management', hi: 'स्मार्ट ट्रैफिक मैनेजमेंट', meaning: 'स्मार्ट यातायात प्रबंधन प्रणाली', category: 'Public Board' },
 ];
 
 export const Hero: React.FC<HeroProps> = ({
@@ -182,24 +182,36 @@ export const Hero: React.FC<HeroProps> = ({
                 </div>
               </div>
 
-              {/* RIGHT: Hindi Transliteration */}
+              {/* RIGHT: Hindi Transliteration & Meaning */}
               <div className="p-6 sm:p-8 flex flex-col justify-between bg-amber-50/20">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
                     <span className="text-xs font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1.5">
                       <Languages className="w-4 h-4 text-amber-600" />
-                      Hindi Transliteration
+                      Hindi Output (उच्चारण एवं अर्थ)
                     </span>
                     <span className="text-[11px] font-semibold text-amber-800/80 bg-amber-100/70 px-2 py-0.5 rounded-full">
                       Devanagari Script
                     </span>
                   </div>
-                  <div className="p-4 rounded-xl bg-white border border-amber-200/80 shadow-xs relative group">
-                    <p className="font-devanagari text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
+
+                  {/* Transliteration Box */}
+                  <div className="p-3.5 rounded-xl bg-white border border-amber-200/80 shadow-xs">
+                    <span className="text-[10px] font-bold text-amber-800 uppercase block mb-0.5">
+                      लिप्यंतरण (उच्चारण • Transliteration):
+                    </span>
+                    <p className="font-devanagari text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
                       "{activeExample.hi}"
                     </p>
-                    <p className="mt-2 text-xs text-amber-800/80">
-                      Natural Hindi pronunciation • Zero translation of meaning
+                  </div>
+
+                  {/* Meaning Box */}
+                  <div className="p-3.5 rounded-xl bg-teal-50/70 border border-teal-200/80 shadow-xs">
+                    <span className="text-[10px] font-bold text-teal-800 uppercase block mb-0.5">
+                      हिंदी अर्थ (Hindi Meaning • अनुवाद):
+                    </span>
+                    <p className="font-devanagari text-lg sm:text-xl font-semibold text-teal-950 leading-snug">
+                      "{activeExample.meaning}"
                     </p>
                   </div>
                 </div>

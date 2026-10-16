@@ -21,6 +21,7 @@ import {
   FlipHorizontal,
   X,
   Pencil,
+  BookOpen,
 } from 'lucide-react';
 import { ocrExtract, transliterateText, generateTTS } from '../services/api.js';
 import { preprocessImage, PreprocessOptions } from '../services/imageProcessor.js';
@@ -63,11 +64,14 @@ export const CameraWorkspace: React.FC = () => {
   // Transliteration result state
   const [isTransliterating, setIsTransliterating] = useState(false);
   const [transliteratedText, setTransliteratedText] = useState('');
+  const [meaningText, setMeaningText] = useState('');
   const [transliterationConfidence, setTransliterationConfidence] = useState<number | null>(null);
 
   // Utility states
   const [copied, setCopied] = useState(false);
+  const [meaningCopied, setMeaningCopied] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isPlayingMeaningAudio, setIsPlayingMeaningAudio] = useState(false);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -258,6 +262,7 @@ export const CameraWorkspace: React.FC = () => {
       const res = await transliterateText(textToTransliterate, 'camera', { correctOcr: true });
       if (res.success) {
         setTransliteratedText(res.transliteration);
+        setMeaningText(res.meaning || '');
         setTransliterationConfidence(res.confidence);
 
         // Save to History
@@ -265,6 +270,7 @@ export const CameraWorkspace: React.FC = () => {
           source: 'camera',
           originalText: textToTransliterate,
           transliteratedText: res.transliteration,
+          meaning: res.meaning || '',
           confidence: res.confidence,
         });
       } else {
@@ -288,6 +294,7 @@ export const CameraWorkspace: React.FC = () => {
     setProcessedImage(null);
     setDetectedText('');
     setTransliteratedText('');
+    setMeaningText('');
     setOcrConfidence(null);
     setTransliterationConfidence(null);
     setErrorMessage(null);
@@ -302,6 +309,15 @@ export const CameraWorkspace: React.FC = () => {
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
+    }
+  };
+
+  const handleCopyMeaning = async () => {
+    if (!meaningText) return;
+    const ok = await copyToClipboard(meaningText);
+    if (ok) {
+      setMeaningCopied(true);
+      setTimeout(() => setMeaningCopied(false), 1500);
     }
   };
 
@@ -325,7 +341,7 @@ export const CameraWorkspace: React.FC = () => {
           setIsPlayingAudio(false);
           setCurrentAudio(null);
         };
-        audio.onerror = () => fallbackSpeak();
+        audio.onerror = () => fallbackSpeak(transliteratedText, () => setIsPlayingAudio(false));
         await audio.play();
         return;
       }
@@ -333,20 +349,51 @@ export const CameraWorkspace: React.FC = () => {
       // fallback
     }
 
-    fallbackSpeak();
+    fallbackSpeak(transliteratedText, () => setIsPlayingAudio(false));
   };
 
-  const fallbackSpeak = () => {
+  const handleSpeakMeaning = async () => {
+    if (!meaningText) return;
+
+    if (currentAudio) {
+      currentAudio.pause();
+      setCurrentAudio(null);
+      setIsPlayingMeaningAudio(false);
+      return;
+    }
+
+    setIsPlayingMeaningAudio(true);
+    try {
+      const audioUrl = await generateTTS(meaningText);
+      if (audioUrl) {
+        const audio = new Audio(audioUrl);
+        setCurrentAudio(audio);
+        audio.onended = () => {
+          setIsPlayingMeaningAudio(false);
+          setCurrentAudio(null);
+        };
+        audio.onerror = () => fallbackSpeak(meaningText, () => setIsPlayingMeaningAudio(false));
+        await audio.play();
+        return;
+      }
+    } catch (e) {
+      // fallback
+    }
+
+    fallbackSpeak(meaningText, () => setIsPlayingMeaningAudio(false));
+  };
+
+  const fallbackSpeak = (textToSpeak: string, onEnd: () => void) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(transliteratedText);
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
       utterance.lang = 'hi-IN';
       utterance.rate = 0.9;
-      utterance.onend = () => setIsPlayingAudio(false);
-      utterance.onerror = () => setIsPlayingAudio(false);
+      utterance.onend = onEnd;
+      utterance.onerror = onEnd;
       window.speechSynthesis.speak(utterance);
     } else {
-      setIsPlayingAudio(false);
+      onEnd();
     }
   };
 
@@ -845,75 +892,144 @@ export const CameraWorkspace: React.FC = () => {
                 </div>
               </div>
 
-              {/* Text display */}
-              <div className="p-6 rounded-2xl bg-amber-50/40 border border-amber-200/80 mb-6">
-                <p className="font-devanagari text-2xl sm:text-3xl font-bold text-slate-900 leading-relaxed whitespace-pre-wrap">
-                  {transliteratedText}
-                </p>
+              {/* Dual Cards: Transliteration & Hindi Meaning */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {/* 1. Transliteration Card */}
+                <div className="p-5 rounded-2xl bg-amber-50/60 border border-amber-200/90 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-amber-200/50">
+                      <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-800">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                        <span>लिप्यंतरण (उच्चारण)</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={handleSpeak}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-amber-800 bg-amber-100 hover:bg-amber-200 transition-colors"
+                          title="Listen to pronunciation"
+                        >
+                          {isPlayingAudio ? (
+                            <>
+                              <VolumeX className="w-3 h-3 text-amber-800 animate-pulse" />
+                              <span>Stop</span>
+                            </>
+                          ) : (
+                            <>
+                              <Volume2 className="w-3 h-3 text-amber-800" />
+                              <span>Speak</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={handleCopy}
+                          className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                            copied
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-white text-slate-700 hover:bg-amber-100/60 border border-amber-200/60'
+                          }`}
+                          title="Copy transliteration"
+                        >
+                          {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="font-devanagari text-2xl font-bold text-slate-900 leading-relaxed whitespace-pre-wrap">
+                      {transliteratedText}
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-amber-700/80 mt-3 font-medium">
+                    Native Devanagari phonetic pronunciation for signage.
+                  </p>
+                </div>
+
+                {/* 2. Hindi Meaning Card */}
+                <div className="p-5 rounded-2xl bg-teal-50/70 border border-teal-200 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between pb-2 mb-3 border-b border-teal-200/50">
+                      <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-teal-800">
+                        <BookOpen className="w-3.5 h-3.5 text-teal-600" />
+                        <span>हिंदी अर्थ (Meaning / अनुवाद)</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={handleSpeakMeaning}
+                          disabled={!meaningText}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-teal-800 bg-teal-100 hover:bg-teal-200 transition-colors disabled:opacity-40"
+                          title="Listen to Hindi meaning"
+                        >
+                          {isPlayingMeaningAudio ? (
+                            <>
+                              <VolumeX className="w-3 h-3 text-teal-800 animate-pulse" />
+                              <span>Stop</span>
+                            </>
+                          ) : (
+                            <>
+                              <Volume2 className="w-3 h-3 text-teal-800" />
+                              <span>Speak</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={handleCopyMeaning}
+                          disabled={!meaningText}
+                          className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                            meaningCopied
+                              ? 'bg-emerald-600 text-white'
+                              : 'bg-white text-slate-700 hover:bg-teal-100/60 border border-teal-200/60 disabled:opacity-40'
+                          }`}
+                          title="Copy Hindi meaning"
+                        >
+                          {meaningCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="font-devanagari text-2xl font-bold text-teal-950 leading-relaxed whitespace-pre-wrap">
+                      {meaningText || (
+                        <span className="text-slate-400 text-base font-normal italic">
+                          अर्थ निकाला जा रहा है... (Translating...)
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-teal-700/80 mt-3 font-medium">
+                    Actual Hindi translation & definition of the extracted text.
+                  </p>
+                </div>
               </div>
 
               {/* Action Toolbar */}
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleSpeak}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-amber-800 bg-amber-100 hover:bg-amber-200 transition-colors"
-                  >
-                    {isPlayingAudio ? (
-                      <>
-                        <VolumeX className="w-4 h-4 text-amber-800 animate-pulse" />
-                        <span>Stop Speech</span>
-                      </>
-                    ) : (
-                      <>
-                        <Volume2 className="w-4 h-4 text-amber-800" />
-                        <span>Speak it</span>
-                      </>
-                    )}
-                  </button>
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+                <div className="text-xs text-slate-500 font-medium">
+                  उच्चारण एवं हिंदी अर्थ दोनों सहेजे गए हैं
                 </div>
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={handleCopy}
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                      copied
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
-                    }`}
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="w-3.5 h-3.5" />
-                        <span>Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Copy</span>
-                      </>
-                    )}
-                  </button>
-
-                  <button
-                    onClick={() => downloadAsTxt(detectedText, transliteratedText, 'camera')}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
+                    onClick={() => downloadAsTxt(detectedText, transliteratedText, 'camera', meaningText)}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 cursor-pointer"
                   >
                     <FileText className="w-3.5 h-3.5 text-slate-500" />
                     <span>TXT</span>
                   </button>
 
                   <button
-                    onClick={() => downloadAsPdf(detectedText, transliteratedText, transliterationConfidence || 0.95, 'camera')}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
+                    onClick={() => downloadAsPdf(detectedText, transliteratedText, transliterationConfidence || 0.95, 'camera', meaningText)}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 cursor-pointer"
                   >
                     <FileCheck2 className="w-3.5 h-3.5 text-rose-600" />
                     <span>PDF</span>
                   </button>
 
                   <button
-                    onClick={() => shareResult('Hindi Transliteration', `${detectedText}\n\n→\n\n${transliteratedText}`)}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50"
+                    onClick={() => {
+                      const shareBody = meaningText
+                        ? `${detectedText}\n\n→ लिप्यंतरण:\n${transliteratedText}\n\n→ हिंदी अर्थ:\n${meaningText}`
+                        : `${detectedText}\n\n→\n\n${transliteratedText}`;
+                      shareResult('Hindi Transliteration & Meaning', shareBody);
+                    }}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 cursor-pointer"
                   >
                     <Share2 className="w-3.5 h-3.5 text-slate-500" />
                     <span>Share</span>

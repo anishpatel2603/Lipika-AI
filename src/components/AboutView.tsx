@@ -12,16 +12,16 @@ import {
 } from 'lucide-react';
 
 const TEST_CASES = [
-  { en: 'Hello', hi: 'हेलो', note: 'Universal greeting phonetic' },
-  { en: 'Good Morning', hi: 'गुड मॉर्निंग', note: 'Never "सुप्रभात"' },
-  { en: 'Welcome to Mumbai', hi: 'वेलकम टू मुंबई', note: 'Highway & airport standard' },
-  { en: 'Artificial Intelligence', hi: 'आर्टिफिशियल इंटेलिजेंस', note: 'Never "कृत्रिम बुद्धिमत्ता"' },
-  { en: 'Computer Science', hi: 'कंप्यूटर साइंस', note: 'Never "संगणक विज्ञान"' },
-  { en: 'Pillai College of Engineering', hi: 'पिल्लई कॉलेज ऑफ इंजीनियरिंग', note: 'Autonomous campus name' },
-  { en: 'Smart Traffic Management', hi: 'स्मार्ट ट्रैफिक मैनेजमेंट', note: 'Public municipal signage' },
-  { en: 'Cyber Security', hi: 'साइबर सिक्योरिटी', note: 'Technical domain term' },
-  { en: 'Machine Learning', hi: 'मशीन लर्निंग', note: 'Technical AI term' },
-  { en: 'Technology', hi: 'टेक्नोलॉजी', note: 'Common vocabulary' },
+  { en: 'Hello', hi: 'हेलो', meaning: 'नमस्ते / नमस्कार', note: 'Universal greeting phonetic' },
+  { en: 'Good Morning', hi: 'गुड मॉर्निंग', meaning: 'शुभ प्रभात / सुप्रभात', note: 'Phonetic + Native Hindi' },
+  { en: 'Welcome to Mumbai', hi: 'वेलकम टू मुंबई', meaning: 'मुंबई में आपका स्वागत है', note: 'Highway & airport standard' },
+  { en: 'Artificial Intelligence', hi: 'आर्टिफिशियल इंटेलिजेंस', meaning: 'कृत्रिम बुद्धिमत्ता (एआई)', note: 'AI domain terminology' },
+  { en: 'Computer Science', hi: 'कंप्यूटर साइंस', meaning: 'कंप्यूटर विज्ञान (संगणक)', note: 'Academic branch' },
+  { en: 'Pillai College of Engineering', hi: 'पिल्लई कॉलेज ऑफ इंजीनियरिंग', meaning: 'पिल्लई अभियांत्रिकी महाविद्यालय', note: 'Autonomous campus name' },
+  { en: 'Smart Traffic Management', hi: 'स्मार्ट ट्रैफिक मैनेजमेंट', meaning: 'स्मार्ट यातायात प्रबंधन', note: 'Public municipal signage' },
+  { en: 'Cyber Security', hi: 'साइबर सिक्योरिटी', meaning: 'साइबर सुरक्षा', note: 'Technical domain term' },
+  { en: 'Machine Learning', hi: 'मशीन लर्निंग', meaning: 'मशीन लर्निंग (यंत्र अधिगम)', note: 'Technical AI term' },
+  { en: 'Technology', hi: 'टेक्नोलॉजी', meaning: 'प्रौद्योगिकी / तकनीक', note: 'Common vocabulary' },
 ];
 
 export const AboutView: React.FC = () => {
@@ -37,11 +37,11 @@ export const AboutView: React.FC = () => {
           About Lipika AI
         </h1>
         <p className="text-base text-slate-600 mt-2 max-w-3xl leading-relaxed">
-          Lipika AI is an intelligent full-stack AI transliteration agent engineered to bridge the linguistic gap between ubiquitous English public signage, digital documents, and comfortable Devanagari script reading.
+          Lipika AI is an intelligent full-stack linguistic intelligence agent engineered to convert English public signage, digital documents, and sentences into natural Devanagari script transliteration (उच्चारण) while concurrently providing their accurate Hindi meaning (हिंदी अर्थ).
         </p>
       </div>
 
-      {/* 1. Transliteration vs Translation */}
+      {/* 1. Transliteration & Meaning Engine */}
       <section className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
@@ -49,25 +49,25 @@ export const AboutView: React.FC = () => {
           </div>
           <div>
             <h2 className="text-xl font-bold text-slate-900">
-              1. What is Transliteration vs. Translation?
+              1. Dual Intelligence: Phonetic Transliteration + Hindi Meaning
             </h2>
-            <p className="text-xs text-slate-500">Phonetic character conversion vs. semantic substitution</p>
+            <p className="text-xs text-slate-500">Phonetic character pronunciation alongside semantic definition</p>
           </div>
         </div>
 
         <p className="text-sm text-slate-700 leading-relaxed">
-          <strong>Transliteration</strong> maps the phonetics (the actual sounds) of words from one script into another. When you see a signboard that says <span className="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-xs font-bold">"Welcome to Mumbai"</span>, a Hindi speaker reading that sign aloud says <em>"Welcome to Mumbai"</em>. Transliterating it produces <span className="font-devanagari font-bold text-amber-700 text-base">"वेलकम टू मुंबई"</span>.
+          <strong>Transliteration (उच्चारण)</strong> maps the phonetics (the actual sounds) of words from Latin script into Devanagari. When you see a signboard that says <span className="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-xs font-bold">"Welcome to Mumbai"</span>, a Hindi speaker reading that sign aloud says <em>"Welcome to Mumbai"</em>. Transliterating it produces <span className="font-devanagari font-bold text-amber-700 text-base">"वेलकम टू मुंबई"</span>.
         </p>
 
         <p className="text-sm text-slate-700 leading-relaxed">
-          If a system were to <strong>translate</strong> it semantically, it would generate <span className="font-devanagari font-bold text-slate-500 line-through">"मुंबई में आपका स्वागत है"</span>. While grammatically correct in Hindi, someone standing at the airport or train station looking for the sign reading <em>"Welcome to Mumbai"</em> would find translated words confusing.
+          <strong>Hindi Meaning (अर्थ)</strong> provides the native semantic comprehension. Alongside the phonetic pronunciation, Lipika AI delivers <span className="font-devanagari font-bold text-teal-800 text-base">"मुंबई में आपका स्वागत है"</span>. This gives users the best of both worlds: they can pronounce the sign accurately in Devanagari AND understand its exact Hindi meaning in their native language.
         </p>
 
         <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
           <div className="text-xs text-amber-900 leading-relaxed">
-            <strong className="block font-bold mb-0.5">Core Rule of Lipika AI:</strong>
-            The AI Transliteration Agent is instructed strictly <strong>never to substitute vocabulary or translate semantic meaning</strong> unless explicitly directed. Technical terms, college names, road identifiers, room numbers, and URLs remain 100% true to their original spoken English formulation.
+            <strong className="block font-bold mb-0.5">Zero Confusion Architecture:</strong>
+            The system cleanly separates the <strong>Transliteration</strong> (Devanagari phonetics) from the <strong>Hindi Meaning</strong> (हिंदी अर्थ). Both are available side-by-side, can be copied or spoken individually, and are exported cleanly to TXT and PDF.
           </div>
         </div>
       </section>
@@ -80,9 +80,9 @@ export const AboutView: React.FC = () => {
           </div>
           <div>
             <h2 className="text-xl font-bold text-slate-900">
-              2. Verified Transliteration Benchmark Suite
+              2. Verified Transliteration & Meaning Benchmark Suite
             </h2>
-            <p className="text-xs text-slate-500">Official evaluation test cases mandated for college and production verification</p>
+            <p className="text-xs text-slate-500">Official evaluation test cases verified for Devanagari orthography and Hindi semantic accuracy</p>
           </div>
         </div>
 
@@ -91,8 +91,9 @@ export const AboutView: React.FC = () => {
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase tracking-wider font-semibold">
                 <th className="py-3 px-4">English Input</th>
-                <th className="py-3 px-4 font-devanagari">Correct Devanagari Output</th>
-                <th className="py-3 px-4">Phonetic Rule / Context</th>
+                <th className="py-3 px-4 font-devanagari text-amber-900">उच्चारण (Transliteration)</th>
+                <th className="py-3 px-4 font-devanagari text-teal-900">हिंदी अर्थ (Meaning)</th>
+                <th className="py-3 px-4">Category / Note</th>
                 <th className="py-3 px-4 text-center">Status</th>
               </tr>
             </thead>
@@ -101,6 +102,7 @@ export const AboutView: React.FC = () => {
                 <tr key={idx} className="hover:bg-slate-50/70">
                   <td className="py-3 px-4 font-bold text-slate-800">{tc.en}</td>
                   <td className="py-3 px-4 font-devanagari text-base font-bold text-amber-800">{tc.hi}</td>
+                  <td className="py-3 px-4 font-devanagari text-sm font-semibold text-teal-800">{tc.meaning}</td>
                   <td className="py-3 px-4 text-slate-500 font-sans">{tc.note}</td>
                   <td className="py-3 px-4 text-center font-sans">
                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">

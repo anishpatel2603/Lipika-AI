@@ -84,6 +84,7 @@ export async function transliterateImage(base64Image: string): Promise<ImageTran
     success: true,
     detected_text: ocrResult.text,
     transliterated_text: transliterationResult.transliteration,
+    meaning: transliterationResult.meaning,
     ocr_confidence: ocrResult.confidence,
     transliteration_confidence: transliterationResult.confidence,
     steps: [
@@ -102,7 +103,7 @@ export async function chatWithAgent(
   message: string,
   originalText: string,
   currentTransliteration: string
-): Promise<{ reply: string; updatedTransliteration: string }> {
+): Promise<{ reply: string; updatedTransliteration: string; updatedMeaning?: string }> {
   try {
     const response = await fetch('/api/agent-chat', {
       method: 'POST',
@@ -119,8 +120,9 @@ export async function chatWithAgent(
 
   const updated = localTransliterate(originalText);
   return {
-    reply: "I've re-aligned the transliteration phonetics for you.",
+    reply: "I've re-aligned the transliteration phonetics and extracted the Hindi meaning for you.",
     updatedTransliteration: updated.transliteration,
+    updatedMeaning: updated.meaning,
   };
 }
 

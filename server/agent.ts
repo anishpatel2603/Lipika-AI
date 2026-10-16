@@ -1,8 +1,8 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import { AgentStep, TransliterateResponse } from '../src/types/index.js';
-import { advancedPhoneticTransliterate, fixDevanagariOrphanMatras } from '../src/services/phoneticParser.js';
+import { advancedPhoneticTransliterate, fixDevanagariOrphanMatras, findHindiMeaning } from '../src/services/phoneticParser.js';
 
-export { fixDevanagariOrphanMatras };
+export { fixDevanagariOrphanMatras, findHindiMeaning };
 
 // Pre-compiled common phonetic transliteration dictionary for rapid response and reliable offline fallback
 const PHONETIC_DICTIONARY: Record<string, string> = {
@@ -226,25 +226,39 @@ const HINGLISH_MAP: Record<string, string> = {
   'acha': 'अच्छा'
 };
 
-const SYSTEM_INSTRUCTION = `You are Lipika AI, a world-class Hindi transliteration agent trained on massive Indian English and Hinglish corpora.
-Your core task is EXACT PHONETIC TRANSLITERATION, NOT TRANSLATION. There must be ZERO SPELLING MISTAKES and zero broken Unicode characters.
+const SYSTEM_INSTRUCTION = `You are Lipika AI, a world-class Hindi transliteration & linguistic intelligence agent trained on massive Indian English and Hinglish corpora.
+Your core task is TWO-FOLD:
+1. EXACT PHONETIC TRANSLITERATION (उच्चारण): Convert English words, Hinglish phrases, and English sentences into natural, authentic Hindi Devanagari script preserving contemporary Indian spoken pronunciation with ZERO SPELLING MISTAKES and zero broken Unicode characters.
+2. HINDI MEANING / TRANSLATION (हिंदी अर्थ): Provide the natural, accurate, meaningful translation/explanation of the word, phrase, or sentence in clean, native Hindi Devanagari script.
 
-Convert English words, Hinglish phrases, and English sentences into natural, authentic Hindi Devanagari script preserving contemporary Indian spoken pronunciation.
+CRITICAL RULES:
+1. FOR "transliterated_text": NEVER translate the meaning. Only transcribe the phonetic sounds into Devanagari!
+   - "Good Morning" -> "गुड मॉर्निंग"
+   - "Computer Science" -> "कंप्यूटर साइंस"
+   - "Welcome to Mumbai" -> "वेलकम टू मुंबई"
+   - "Artificial Intelligence" -> "आर्टिफिशियल इंटेलिजेंस"
+   - "Pillai College of Engineering" -> "पिल्लई कॉलेज ऑफ इंजीनियरिंग"
+   - "Smart Traffic Management" -> "स्मार्ट ट्रैफिक मैनेजमेंट"
+   - "Cyber Security" -> "साइबर सिक्योरिटी"
+   - "Machine Learning" -> "मशीन लर्निंग"
+   - "Technology" -> "टेक्नोलॉजी"
+   - "Is everything working perfectly" -> "इज़ एवरीथिंग वर्किंग परफेक्टली"
 
-ABSOLUTE CRITICAL RULES:
-1. NEVER TRANSLATE THE MEANING.
-   - "Good Morning" -> "गुड मॉर्निंग" (NEVER "सुप्रभात").
-   - "Computer Science" -> "कंप्यूटर साइंस" (NEVER "संगणक विज्ञान").
-   - "Welcome to Mumbai" -> "वेलकम टू मुंबई".
-   - "Artificial Intelligence" -> "आर्टिफिशियल इंटेलिजेंस".
-   - "Pillai College of Engineering" -> "पिल्लई कॉलेज ऑफ इंजीनियरिंग".
-   - "Smart Traffic Management" -> "स्मार्ट ट्रैफिक मैनेजमेंट".
-   - "Cyber Security" -> "साइबर सिक्योरिटी".
-   - "Machine Learning" -> "मशीन लर्निंग".
-   - "Technology" -> "टेक्नोलॉजी".
-   - "Is everything working perfectly" -> "इज़ एवरीथिंग वर्किंग परफेक्टली".
+2. FOR "hindi_meaning": Provide the meaningful Hindi translation/explanation (अर्थ)!
+   - "Good Morning" -> "शुभ प्रभात / सुप्रभात"
+   - "Computer Science" -> "कंप्यूटर विज्ञान"
+   - "Welcome to Mumbai" -> "मुंबई में आपका स्वागत है"
+   - "Artificial Intelligence" -> "कृत्रिम बुद्धिमत्ता (एआई)"
+   - "Pillai College of Engineering" -> "पिल्लई अभियांत्रिकी महाविद्यालय (इंजीनियरिंग कॉलेज)"
+   - "Smart Traffic Management" -> "स्मार्ट यातायात प्रबंधन"
+   - "Cyber Security" -> "साइबर सुरक्षा"
+   - "Machine Learning" -> "मशीन लर्निंग (यंत्र अधिगम)"
+   - "Technology" -> "प्रौद्योगिकी / तकनीक"
+   - "Is everything working perfectly" -> "क्या सब कुछ बिल्कुल ठीक से काम कर रहा है?"
+   - "Emergency Exit" -> "आपातकालीन निकास"
+   - If input is Hinglish (already Hindi in Roman script, e.g. "Namaste aap kaise ho"), transliterated_text is "नमस्ते आप कैसे हो" and hindi_meaning is "नमस्ते, आप कैसे हैं?"
 
-2. ZERO SPELLING MISTAKES & TYPO TOLERANCE:
+3. ZERO SPELLING MISTAKES & TYPO TOLERANCE:
    - Autocorrect obvious typos, garbled OCR characters, and common phonetic misspellings in the input:
      - e.g. "compluter" -> "कंप्यूटर"
      - "engneering" -> "इंजीनियरिंग"
@@ -253,7 +267,7 @@ ABSOLUTE CRITICAL RULES:
      - "d3partment" -> "डिपार्टमेंट"
    - Output must have 100% correct Devanagari spelling as accepted in modern standard Hindi press and signage.
 
-3. ORTHOGRAPHIC & UNICODE INTEGRITY:
+4. ORTHOGRAPHIC & UNICODE INTEGRITY:
    - NEVER emit orphaned matras (dependent vowel signs like ि, े, ो at the start of a word).
    - Word-initial vowel sounds MUST always use independent vowel characters (अ, आ, इ, ई, उ, ऊ, ए, ऐ, ओ, औ).
      - e.g. "Is" -> "इज़" (NEVER "◌िस").
@@ -261,14 +275,13 @@ ABSOLUTE CRITICAL RULES:
      - "Auto" -> "ऑटो".
    - Never output dotted circles (U+25CC).
 
-4. ENTITY & FORMAT PRESERVATION:
+5. ENTITY & FORMAT PRESERVATION:
    - "Room No. 204" -> "रूम नं. 204" or "रूम No. 204". Preserve numbers and digits.
    - Preserve all URLs, email addresses, and technical code intact (e.g., https://example.com stays https://example.com).
    - Preserve punctuation, bullet points, indentation, line breaks, and paragraph structures.
    - If input is mixed English and Devanagari (e.g. "Welcome to मुंबई College"), keep the Devanagari untouched ("मुंबई") and transliterate only the English ("वेलकम टू मुंबई कॉलेज").
-   - If input is Romanized Hindi (Hinglish, e.g. "Namaste aap kaise ho"), transliterate naturally to Hindi: "नमस्ते आप कैसे हो".
 
-5. Return a clean JSON response adhering to the requested schema.`;
+6. Return a clean JSON response adhering to the requested schema.`;
 
 export class TransliterationAgent {
   private getAi(): GoogleGenAI | null {
@@ -480,8 +493,9 @@ export class TransliterationAgent {
       status: 'success',
     });
 
-    // Step 3: Transliteration Engine
+    // Step 3: Transliteration & Meaning Engine
     let finalTransliteration = '';
+    let finalMeaning = '';
     let confidence = 0.95;
 
     const ai = this.getAi();
@@ -489,22 +503,23 @@ export class TransliterationAgent {
       try {
         steps.push({
           name: 'AI Transliteration Agent',
-          description: 'Sending normalized phonetic request to Gemini Model (gemini-3.8-flash)...',
+          description: 'Sending normalized phonetic & linguistic request to Gemini Model (gemini-3.8-flash)...',
           timestamp: Date.now() - startTime,
           status: 'pending',
         });
 
-        const prompt = `Transliterate the following text into natural Hindi Devanagari script.
-DO NOT TRANSLATE. PRESERVE PHONETIC SOUND.
+        const prompt = `Transliterate the following text into natural Hindi Devanagari script AND provide its accurate Hindi meaning/translation.
+1. Transliterate phonetically into Devanagari script (DO NOT TRANSLATE IN transliterated_text).
+2. Provide the natural, authentic Hindi meaning/translation in hindi_meaning (अर्थ).
 Source type: ${source}
 OCR Error Correction Requested: ${correctOcr ? 'YES' : 'NO'}
 
 Original text:
 ${rawNormalized}`;
 
-        // Timeout promise of 12 seconds to guarantee response even if upstream has slight latency
+        // Timeout promise of 4.5 seconds to ensure snappy responsiveness
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('AI generation timed out')), 12000)
+          setTimeout(() => reject(new Error('AI generation timed out')), 4500)
         );
 
         const geminiPromise = ai.models.generateContent({
@@ -520,6 +535,10 @@ ${rawNormalized}`;
                   type: Type.STRING,
                   description: 'The Devanagari script transliterated text preserving exact pronunciation.',
                 },
+                hindi_meaning: {
+                  type: Type.STRING,
+                  description: 'The natural, accurate Hindi translation/meaning (अर्थ) of the input text in Devanagari Hindi.',
+                },
                 confidence_score: {
                   type: Type.NUMBER,
                   description: 'Confidence between 0.0 and 1.0 based on phonetic fidelity and text clarity.',
@@ -534,7 +553,7 @@ ${rawNormalized}`;
                   description: 'List of corrected OCR glitches if any.',
                 },
               },
-              required: ['transliterated_text', 'confidence_score', 'source_language_detected'],
+              required: ['transliterated_text', 'hindi_meaning', 'confidence_score', 'source_language_detected'],
             },
           },
         });
@@ -543,6 +562,7 @@ ${rawNormalized}`;
 
         const parsed = JSON.parse(response.text || '{}');
         finalTransliteration = fixDevanagariOrphanMatras(parsed.transliterated_text || '');
+        finalMeaning = (parsed.hindi_meaning || '').trim() || findHindiMeaning(rawNormalized);
         confidence = typeof parsed.confidence_score === 'number' ? parsed.confidence_score : 0.95;
 
         const corrections = parsed.ocr_corrections_made || [];
@@ -557,6 +577,7 @@ ${rawNormalized}`;
         console.warn('Gemini transliteration fallback invoked:', err?.message || err);
         // Fallback to our high-quality phonetic rule engine
         finalTransliteration = this.ruleBasedTransliterate(rawNormalized);
+        finalMeaning = findHindiMeaning(rawNormalized);
         confidence = 0.92;
         steps.push({
           name: 'Phonetic Rule Engine (Fallback)',
@@ -569,6 +590,7 @@ ${rawNormalized}`;
     } else {
       // Local rule-based transliteration engine
       finalTransliteration = this.ruleBasedTransliterate(rawNormalized);
+      finalMeaning = findHindiMeaning(rawNormalized);
       confidence = 0.90;
       steps.push({
         name: 'Local Transliteration Engine',
@@ -577,6 +599,14 @@ ${rawNormalized}`;
         status: 'success',
       });
     }
+
+    // Hindi Meaning Step
+    steps.push({
+      name: 'Hindi Meaning Generator',
+      description: 'Extracted natural Hindi meaning (अर्थ).',
+      timestamp: Date.now() - startTime,
+      status: 'success',
+    });
 
     // Step 4: Result Formatter & Confidence Checker
     steps.push({
@@ -590,6 +620,7 @@ ${rawNormalized}`;
       success: true,
       original: rawNormalized,
       transliteration: finalTransliteration,
+      meaning: finalMeaning,
       confidence,
       language: analysis.detectedScript === 'Devanagari' ? 'Hindi' : 'English / Hinglish',
       task: 'transliteration',
@@ -605,8 +636,9 @@ ${rawNormalized}`;
     const ai = this.getAi();
     if (!ai) {
       return {
-        reply: "I am ready to help you refine your transliteration! You can ask me to adjust phonetic spellings, retain specific English brand names, or correct OCR glitches.",
+        reply: "I am ready to help you refine your transliteration and Hindi meaning! You can ask me to adjust phonetic spellings, retain specific English brand names, or explain Hindi meanings.",
         updatedTransliteration: currentTransliteration,
+        updatedMeaning: findHindiMeaning(currentOriginal),
       };
     }
 
@@ -617,7 +649,7 @@ ${rawNormalized}`;
 Current original English text: "${currentOriginal}"
 Current Hindi transliteration: "${currentTransliteration}"
 
-Instruction: You are Lipika AI assistant. Answer the user's request regarding transliteration. If they asked to change, simplify, fix, or re-transliterate, provide the updated transliteration in Hindi Devanagari script. Remember: ALWAYS TRANSLITERATE (pronunciation in Devanagari), NEVER translate the meaning.`,
+Instruction: You are Lipika AI assistant. Answer the user's request regarding transliteration and Hindi meaning. If they asked to change, simplify, fix, or explain, provide both the updated transliteration in Hindi Devanagari script (pronunciation) AND the accurate Hindi meaning (अर्थ).`,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
           responseMimeType: 'application/json',
@@ -632,21 +664,27 @@ Instruction: You are Lipika AI assistant. Answer the user's request regarding tr
                 type: Type.STRING,
                 description: 'The updated Hindi transliteration if changed, or the previous one.',
               },
+              updated_meaning: {
+                type: Type.STRING,
+                description: 'The accurate Hindi meaning / translation in Devanagari script.',
+              },
             },
-            required: ['reply', 'updated_transliteration'],
+            required: ['reply', 'updated_transliteration', 'updated_meaning'],
           },
         },
       });
 
       const data = JSON.parse(response.text || '{}');
       return {
-        reply: data.reply || 'Updated transliteration according to your preference.',
+        reply: data.reply || 'Updated transliteration and meaning according to your preference.',
         updatedTransliteration: data.updated_transliteration || currentTransliteration,
+        updatedMeaning: data.updated_meaning || findHindiMeaning(currentOriginal),
       };
     } catch (err: any) {
       return {
         reply: `Processed your request. (Note: ${err?.message || 'offline mode'})`,
         updatedTransliteration: currentTransliteration,
+        updatedMeaning: findHindiMeaning(currentOriginal),
       };
     }
   }

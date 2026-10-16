@@ -1,17 +1,19 @@
 import { TransliterateResponse } from '../types/index.js';
-import { advancedPhoneticTransliterate, fixDevanagariOrphanMatras } from './phoneticParser.js';
+import { advancedPhoneticTransliterate, fixDevanagariOrphanMatras, findHindiMeaning } from './phoneticParser.js';
 
-export { fixDevanagariOrphanMatras };
+export { fixDevanagariOrphanMatras, findHindiMeaning };
 
 export function localTransliterate(text: string): TransliterateResponse {
   const normalized = text.trim();
   const transliteration = advancedPhoneticTransliterate(normalized);
+  const meaning = findHindiMeaning(normalized);
   const tokenCount = normalized.split(/\s+/).filter(Boolean).length;
 
   return {
     success: true,
     original: normalized,
     transliteration,
+    meaning,
     confidence: 0.96,
     language: 'English / Hinglish',
     task: 'transliteration',
@@ -26,6 +28,12 @@ export function localTransliterate(text: string): TransliterateResponse {
         name: 'Syllabic Devanagari Synthesizer',
         description: `Constructed ${tokenCount} phonetic tokens with correct conjuncts and vowels.`,
         timestamp: 15,
+        status: 'success',
+      },
+      {
+        name: 'Hindi Meaning Generator',
+        description: 'Contextual Hindi meaning extracted for input text.',
+        timestamp: 20,
         status: 'success',
       },
     ],
